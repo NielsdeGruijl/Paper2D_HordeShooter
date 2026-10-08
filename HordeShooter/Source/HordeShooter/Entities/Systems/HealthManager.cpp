@@ -29,16 +29,17 @@ void UHealthManager::TakeDamage(float DamageAmount)
 
 	OnHealthChanged.Broadcast(CurrentHealth);
 	
+	UE_LOG(LogTemp, Warning, TEXT("Health changed %f"), CurrentHealth);
+	
 	if (CurrentHealth <= 0)
 	{
 		GetWorld()->GetTimerManager().SetTimer(DestructionTimer, this,
 			&UHealthManager::DelayedDestruction, DestructionTime);
-		
 	}
 }
 
 void UHealthManager::DelayedDestruction()
 {
-	GetOwner()->Destroy();
+	OnDeath.Broadcast();
 }
 

@@ -15,6 +15,10 @@ class HORDESHOOTER_API UBaseWeaponAbility : public UObject
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY()
+	APawn* Instigator;
+	
 private:
 	UPROPERTY()
 	UBaseAbilityData* Data;

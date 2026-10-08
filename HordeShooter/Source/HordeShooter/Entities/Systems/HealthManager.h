@@ -9,6 +9,8 @@
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float)
 
+DECLARE_MULTICAST_DELEGATE(FOnDeath)
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class HORDESHOOTER_API UHealthManager : public UActorComponent
 {
@@ -18,6 +20,7 @@ public:
 	UHealthManager();
 	
 	FOnHealthChanged OnHealthChanged;
+	FOnDeath OnDeath;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HealthManager")
 	float MaxHealth = 1;

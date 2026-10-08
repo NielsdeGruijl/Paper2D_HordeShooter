@@ -23,6 +23,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	float MaxMoveSpeed = 500;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	float AttackDamage = 1;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
 	UCapsuleComponent* Capsule;
 	
@@ -58,4 +61,8 @@ public:
 	virtual void MoveTo(AActor* TargetActor);
 	
 	virtual void Attack(APawn* Target);
+	
+	virtual void ExecuteAttackAction();
+	
+	virtual void Death();
 };

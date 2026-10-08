@@ -16,12 +16,15 @@ void UPlayerWeaponController::SetWeapon(UWeaponData* WeaponToSet)
 	WeaponData = WeaponToSet;
 	
 	PrimaryAbility = WeaponData->PrimaryAbilityData->CreateAbility(this);
+	PrimaryAbility->Instigator = OwningPawn;
+	
 	SecondaryAbility = WeaponData->SecondaryAbilityData->CreateAbility(this);
+	SecondaryAbility->Instigator = OwningPawn;
 }
 
 void UPlayerWeaponController::StartPrimary()
 {
-	PrimaryAbility->Start(OwningActor->GetActorLocation(), GetMousePosition());
+	PrimaryAbility->Start(OwningPawn->GetActorLocation(), GetMousePosition());
 }
 
 void UPlayerWeaponController::StopPrimary()
@@ -31,7 +34,7 @@ void UPlayerWeaponController::StopPrimary()
 
 void UPlayerWeaponController::StartSecondary()
 {
-	SecondaryAbility->Start(OwningActor->GetActorLocation(), GetMousePosition());
+	SecondaryAbility->Start(OwningPawn->GetActorLocation(), GetMousePosition());
 }
 
 void UPlayerWeaponController::StopSecondary()
@@ -49,7 +52,7 @@ FVector UPlayerWeaponController::GetAimDirection()
 {
 	FVector MousePosition = GetMousePosition();
 	
-	FVector AimDirection = MousePosition - OwningActor->GetActorLocation();
+	FVector AimDirection = MousePosition - OwningPawn->GetActorLocation();
 	
 	return AimDirection;
 }
@@ -68,7 +71,7 @@ FVector UPlayerWeaponController::GetMousePosition()
 	
 	FVector Position = Hit.Location;
 	
-	Position = FVector(Position.X, Position.Y, OwningActor->GetActorLocation().Z);
+	Position = FVector(Position.X, Position.Y, OwningPawn->GetActorLocation().Z);
 	
 	return Position;
 }

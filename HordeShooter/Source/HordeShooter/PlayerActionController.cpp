@@ -20,8 +20,8 @@ void APlayerActionController::BeginPlay()
 	
 	PrimaryWeapon = NewObject<UPlayerWeaponController>(this);
 	
+	PrimaryWeapon->OwningPawn = this;
 	PrimaryWeapon->SetWeapon(PrimaryWeaponData);
-	PrimaryWeapon->OwningActor = this;
 	
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 }

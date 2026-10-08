@@ -19,15 +19,15 @@ public:
 	UPlayerWeaponController();
 	
 	UPROPERTY()
-	AActor* OwningActor;
+	APawn* OwningPawn;
 	
 private:
 	UPROPERTY()
 	UWeaponData* WeaponData;
 	
+	// variables are created/set in SetWeapon()
 	UPROPERTY()
 	UBaseWeaponAbility* PrimaryAbility;
-	
 	UPROPERTY()
 	UBaseWeaponAbility* SecondaryAbility;
 	

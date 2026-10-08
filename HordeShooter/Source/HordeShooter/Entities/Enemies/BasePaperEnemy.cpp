@@ -58,7 +58,7 @@ bool ABasePaperEnemy::GetIsWalking()
 
 void ABasePaperEnemy::FlipSprite(int Direction)
 {
-	GetController()->SetControlRotation(FRotator(0, 0, 180.0f * Direction));
+	Sprite->SetRelativeRotation(FRotator(0, 180.0f * Direction, 0));
 }
 
 void ABasePaperEnemy::Idle()
@@ -82,14 +82,21 @@ void ABasePaperEnemy::Attack(APawn* Target)
 		return;
 	}
 	
-	UE_LOG(LogTemp, Warning, TEXT("Attack!"));
-	
 	float direction = Target->GetActorLocation().X - GetActorLocation().X;
 	
 	if (direction < 0)
-		FlipSprite(-1);
+		FlipSprite(0);
 	else
-		FlipSprite(1);		
+		FlipSprite(1);	
 	
 	AnimationComponent->GetAnimInstance()->JumpToNode("Attack");
+}
+
+void ABasePaperEnemy::ExecuteAttackAction()
+{
+		
+}
+
+void ABasePaperEnemy::Death()
+{
 }

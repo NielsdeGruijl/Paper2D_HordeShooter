@@ -4,7 +4,6 @@
 #include "BaseProjectile.h"
 
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "HordeShooter/Entities/Enemies/BaseEnemy.h"
 #include "HordeShooter/Entities/Systems/HealthManager.h"
 
 ABaseProjectile::ABaseProjectile()
@@ -33,6 +32,9 @@ void ABaseProjectile::Tick(float DeltaTime)
 void ABaseProjectile::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
+	
+	if (GetInstigator() && OtherActor == GetInstigator())
+		return;
 	
 	UHealthManager* HealthManager = OtherActor->FindComponentByClass<UHealthManager>();
 	

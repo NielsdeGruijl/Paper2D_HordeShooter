@@ -14,8 +14,6 @@ class HORDESHOOTER_API ABaseProjectile : public AActor
 	GENERATED_BODY()
 	
 public:	
-	ABaseProjectile();
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MovementSpeed = 2000;
 	
@@ -23,11 +21,11 @@ private:
 	UPROPERTY()
 	UProjectileMovementComponent* ProjectileMovementComponent;
 
-protected:
-	virtual void BeginPlay() override;
-
-	
 public:	
+	ABaseProjectile();
+	
+	virtual void BeginPlay() override;
+	
 	virtual void Tick(float DeltaTime) override;
 	
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;

@@ -14,12 +14,14 @@ void UArcaneProjectile::Start(FVector EntityPosition, FVector AimPosition)
 	UE_LOG(LogTemp, Warning, TEXT("StartPrimaryAbility"));
 	
 	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Instigator = Instigator;
 	
 	FVector AimDirection = AimPosition - EntityPosition;
 	FRotator AimRotation = AimDirection.Rotation();
 	
-	GetWorld()->SpawnActor<ABaseProjectile>(
+	AActor* Projectile = GetWorld()->SpawnActor<ABaseProjectile>(
 		AbilityData->Projectile, EntityPosition, AimRotation, SpawnParameters);
+	
 }
 
 void UArcaneProjectile::Stop()
