@@ -16,7 +16,7 @@ ABaseProjectile::ABaseProjectile()
 	ProjectileMovementComponent->InitialSpeed = MovementSpeed;
 	ProjectileMovementComponent->MaxSpeed = MovementSpeed;
 	
-	ProjectileMovementComponent->ProjectileGravityScale = 0;
+	ProjectileMovementComponent->ProjectileGravityScale = Gravity;
 }
 
 void ABaseProjectile::BeginPlay()

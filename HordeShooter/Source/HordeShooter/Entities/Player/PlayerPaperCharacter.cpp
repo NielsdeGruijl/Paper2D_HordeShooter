@@ -88,7 +88,12 @@ void APlayerPaperCharacter::StopSecondaryAbility(const FInputActionValue& Value)
 
 void APlayerPaperCharacter::FlipSprite(const int Direction)
 {
-	GetSprite()->SetRelativeRotation(FRotator(0.0f, 180.0f * Direction, 0.0f));
+	float Roll = -30;
+	
+	if (Direction > 0)
+		Roll *= -1;
+	
+	GetSprite()->SetRelativeRotation(FRotator(0, 180.0f * Direction, Roll));
 }
 
 void APlayerPaperCharacter::Move(const FInputActionValue& Value)

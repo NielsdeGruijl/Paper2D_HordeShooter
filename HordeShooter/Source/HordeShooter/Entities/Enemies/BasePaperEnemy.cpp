@@ -44,6 +44,8 @@ void ABasePaperEnemy::BeginPlay()
 	Super::BeginPlay();
 	
 	MovementComponent->MaxSpeed = MaxMoveSpeed;
+	
+	Health->OnDeath.AddUObject(this, &ABasePaperEnemy::Death);
 }
 
 void ABasePaperEnemy::Tick(float DeltaSeconds)
@@ -58,7 +60,12 @@ bool ABasePaperEnemy::GetIsWalking()
 
 void ABasePaperEnemy::FlipSprite(int Direction)
 {
-	Sprite->SetRelativeRotation(FRotator(0, 180.0f * Direction, 0));
+	float Roll = 30;
+	
+	if (Direction > 0)
+		Roll *= -1;
+	
+	Sprite->SetRelativeRotation(FRotator(0, 180.0f * Direction, Roll));
 }
 
 void ABasePaperEnemy::Idle()
@@ -81,6 +88,9 @@ void ABasePaperEnemy::Attack(APawn* Target)
 		UE_LOG(LogTemp, Error, TEXT("NO ANIMATION INSTANCE"));
 		return;
 	}
+	
+	if (!TargetToAttack || TargetToAttack != Target)
+		TargetToAttack = Target;
 	
 	float direction = Target->GetActorLocation().X - GetActorLocation().X;
 	

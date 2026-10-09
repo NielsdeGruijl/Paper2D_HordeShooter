@@ -20,6 +20,15 @@ class HORDESHOOTER_API ABasePaperEnemy : public APawn
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY(EditAnywhere, Category = "StateTreeValues")
+	float MinimumChaseDistance;
+	
+	UPROPERTY(EditAnywhere, Category = "StateTreeValues")
+	float MinimumAttackDistance;
+	
+	UPROPERTY(EditAnywhere, Category = "StateTreeValues")
+	float AttackCooldown;
+	
 	UPROPERTY(EditAnywhere)
 	float MaxMoveSpeed = 500;
 	
@@ -40,6 +49,10 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
 	UHealthManager* Health;
+	
+protected:
+	UPROPERTY()
+	APawn* TargetToAttack;
 	
 public:
 	ABasePaperEnemy();

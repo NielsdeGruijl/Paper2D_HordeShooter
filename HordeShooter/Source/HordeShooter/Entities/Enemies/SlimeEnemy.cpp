@@ -16,8 +16,6 @@ ASlimeEnemy::ASlimeEnemy()
 void ASlimeEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	Health->OnDeath.AddUObject(this, &ASlimeEnemy::Death);
 }
 
 void ASlimeEnemy::ExecuteAttackAction()

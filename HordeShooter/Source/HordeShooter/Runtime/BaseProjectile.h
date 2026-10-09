@@ -17,10 +17,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MovementSpeed = 2000;
 	
-private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Gravity = 1;
+	
 	UPROPERTY()
 	UProjectileMovementComponent* ProjectileMovementComponent;
-
+	
 public:	
 	ABaseProjectile();
 	

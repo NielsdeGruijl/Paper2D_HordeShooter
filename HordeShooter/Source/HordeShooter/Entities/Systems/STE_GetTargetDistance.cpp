@@ -5,7 +5,6 @@
 
 #include "StateTreeExecutionContext.h"
 #include "GameFramework/Character.h"
-#include "HordeShooter/Entities/Enemies/BaseEnemy.h"
 #include "Kismet/GameplayStatics.h"
 
 

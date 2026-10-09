@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "DetourCrowdAIController.h"
 #include "Components/StateTreeAIComponent.h"
 #include "EnemyAIController.generated.h"
 
@@ -12,8 +13,11 @@ class UHealthManager;
 /**
  * 
  */
+
+// Change to use ADetourCrowdAIController
+
 UCLASS()
-class HORDESHOOTER_API AEnemyAIController : public AAIController
+class HORDESHOOTER_API AEnemyAIController : public ADetourCrowdAIController
 {
 	GENERATED_BODY()
 	

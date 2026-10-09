@@ -37,6 +37,3 @@ void AEnemyAIController::OnPawnHealthChanged(float NewHealth)
 {
 	UE_LOG(LogTemp, Warning, TEXT("New heatlh: %f"), NewHealth);
 }
-
-
-
