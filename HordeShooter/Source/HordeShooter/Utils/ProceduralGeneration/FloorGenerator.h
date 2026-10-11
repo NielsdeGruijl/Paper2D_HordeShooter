@@ -13,9 +13,12 @@ class HORDESHOOTER_API FloorGenerator
 public:
 	void Generate(
 		const TArray<FGridCell>* PreviousFloor, 
-		FVector2D FloorDimensions, 
-		TArray<FGridCell>& OutFloor);
+		FVector FloorDimensions, 
+		TArray<FGridCell>& OutFloor, 
+		float GenerateRoofsCoeff);
 	
 private:
-	void SetWalls();
+	void SetRoofCorner(FGridCell& Cell);
+	
+	void SetNeighbours(TArray<FGridCell>& Floor, int FloorDepth);
 };

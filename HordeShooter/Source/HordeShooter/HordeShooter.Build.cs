@@ -9,7 +9,7 @@ public class HordeShooter : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", 
-			"EnhancedInput", "PaperZD", "Paper2D", "StateTreeModule", "GameplayStateTreeModule" });
+			"EnhancedInput", "GameplayTags", "PaperZD", "Paper2D", "StateTreeModule", "GameplayStateTreeModule" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "HordeShooter/Utils/ProceduralGeneration/StructureGenerator.h"
 #include "HordeShooter/Utils/ProceduralGeneration/StructureParameters.h"
 #include "Structure.generated.h"
 
@@ -19,7 +20,7 @@ public:
 	AStructure();
 	
 	UPROPERTY(EditAnywhere)
-	FStructureParameters StructureParameters;
+	TObjectPtr<UStructureStyle> Style;
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -27,12 +28,18 @@ private:
 	
 	UPROPERTY()
 	TMap<TObjectPtr<UStaticMesh>, TObjectPtr<UInstancedStaticMeshComponent>> MeshComponents;
+
+	FRandomStream RandomStream;
 	
 public:	
 	virtual void BeginPlay() override;
 	
 private:
-	void PlaceWall(const FGridCell& Cell);
+	TSoftObjectPtr<UStaticMesh> GetRandomMesh(ECellType MeshTag, ECellSubType SubType);
+	
+	void PlaceWall(const FGridCell& Cell, int FloorNumber);
+	
+	//void PlaceRoof(const FGridCell& Cell, int FloorNumber);
 	
 	UInstancedStaticMeshComponent* GetOrCreateISMC(UStaticMesh* Mesh);
 };
