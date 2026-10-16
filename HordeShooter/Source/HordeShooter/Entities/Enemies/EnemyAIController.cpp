@@ -18,12 +18,7 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	
-	//HealthManager = InPawn->FindComponentByClass<UHealthManager>();
-	
-	/*if (HealthManager)
-	{
-		HealthManager->OnHealthChanged.AddUObject(this, &AEnemyAIController::OnPawnHealthChanged);
-	}*/
+	StateTree->StartLogic();
 }
 
 void AEnemyAIController::OnUnPossess()
