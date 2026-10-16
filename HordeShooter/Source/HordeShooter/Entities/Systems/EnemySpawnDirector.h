@@ -6,17 +6,62 @@
 #include "GameFramework/Actor.h"
 #include "EnemySpawnDirector.generated.h"
 
+class UEnemySpawnCard;
+class AEnemySpawner;
+
 UCLASS()
 class HORDESHOOTER_API AEnemySpawnDirector : public AActor
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY(EditAnywhere, Category = "Budget")
+	int StartingCredits = 10;
+	
+	// Amount of credits to increase by per interval
+	UPROPERTY(EditAnywhere, Category = "Budget")
+	int CreditIncrease = 1;
+	
+	// Duration between credit increases in seconds
+	UPROPERTY(EditAnywhere, Category = "Budget")
+	float CreditIncreaseInterval = 1;
+	
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	int MaxPresentEnemies = 20;
+	
+	// Duration between enemy spawn attempts in seconds
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	float SpawnInterval = 1;
+	
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	TArray<UEnemySpawnCard*> EnemySpawnCards;
+	
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	TArray<AEnemySpawner*> Spawners;
+	
+private:
+	UPROPERTY()
+	FTimerHandle SpawnTimerHandle;
+	
+	UPROPERTY()
+	FTimerHandle CreditTimerHandle;
+	
+
+	
+	int CurrentPresentEnemyCount = 0;
+	
+	int CurrentCredits = 0;
+	
 public:	
 	AEnemySpawnDirector();
 
-public:	
 	virtual void BeginPlay() override;
 	
 	virtual void Tick(float DeltaTime) override;
+	
+private:
+	void TrySpawnEnemies();
+	
+	void IncreaseCredits();
 
 };

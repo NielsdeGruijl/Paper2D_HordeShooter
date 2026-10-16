@@ -29,7 +29,7 @@ void UHealthManager::TakeDamage(float DamageAmount)
 
 	OnHealthChanged.Broadcast(CurrentHealth);
 	
-	UE_LOG(LogTemp, Warning, TEXT("Health changed %f"), CurrentHealth);
+	//UE_LOG(LogTemp, Warning, TEXT("Health changed %f"), CurrentHealth);
 	
 	if (CurrentHealth <= 0)
 	{
