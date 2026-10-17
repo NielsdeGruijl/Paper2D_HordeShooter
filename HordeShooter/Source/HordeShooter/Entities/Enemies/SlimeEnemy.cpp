@@ -36,10 +36,3 @@ void ASlimeEnemy::ExecuteAttackAction()
 		}
 	}
 }
-
-void ASlimeEnemy::Death()
-{
-	Super::Death();
-	
-	Destroy();
-}

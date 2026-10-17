@@ -25,6 +25,4 @@ public:
 	virtual void BeginPlay() override;
 	
 	virtual void ExecuteAttackAction() override;
-	
-	virtual void Death() override;
 };

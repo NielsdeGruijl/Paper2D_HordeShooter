@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AIController.h"
 #include "DetourCrowdAIController.h"
 #include "Components/StateTreeAIComponent.h"
 #include "EnemyAIController.generated.h"
@@ -29,7 +28,7 @@ private:
 	TObjectPtr<UHealthManager> HealthManager;
 	
 public:
-	AEnemyAIController();
+	AEnemyAIController(const FObjectInitializer& ObjectInitializer);
 	
 	UPROPERTY(EditAnywhere)
 	UStateTreeAIComponent* StateTree;

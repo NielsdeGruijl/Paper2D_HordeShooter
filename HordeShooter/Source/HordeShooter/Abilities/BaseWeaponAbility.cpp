@@ -5,12 +5,10 @@
 
 void UBaseWeaponAbility::Start(FVector EntityPosition, FVector AimPosition)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Starting Ability"));
 }
 
 void UBaseWeaponAbility::Stop()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Stopping Ability"));
 }
 
 void UBaseWeaponAbility::Update(float DeltaTime)

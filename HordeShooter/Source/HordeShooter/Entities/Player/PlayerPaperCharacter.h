@@ -30,6 +30,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
 	UCameraComponent* Camera;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	UPaperFlipbookComponent* WeaponSprite;
+	
+	UPROPERTY(EDitAnywhere, BlueprintReadWrite, Category = "Equipment")
+	USceneComponent* ProjectileOrigin;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputMappingContext* InputMappingContext;
 	
@@ -49,6 +55,8 @@ private:
 	UPROPERTY()
 	UPlayerWeaponController* PrimaryWeapon;
 	
+	bool bIsLookingRight = false;
+	
 protected:
 	virtual void BeginPlay() override;
 	
@@ -67,4 +75,6 @@ private:
 	void StopSecondaryAbility(const FInputActionValue& Value);
 	
 	void FlipSprite(const int Direction);
+	
+	void RotateWeaponSprite();
 };

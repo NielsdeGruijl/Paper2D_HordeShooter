@@ -11,6 +11,7 @@
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "HordeShooter/Utils/MouseInput.h"
 
 APlayerPaperCharacter::APlayerPaperCharacter()
 {
@@ -20,6 +21,12 @@ APlayerPaperCharacter::APlayerPaperCharacter()
 	SpringArm->SetupAttachment(RootComponent);
 	Camera = CreateDefaultSubobject<UCameraComponent>(FName("Camera"));
 	Camera->SetupAttachment(SpringArm);
+	
+	WeaponSprite = CreateDefaultSubobject<UPaperFlipbookComponent>(FName("WeaponSprite"));
+	WeaponSprite->SetupAttachment(RootComponent);
+	
+	ProjectileOrigin = CreateDefaultSubobject<USceneComponent>(FName("ProjectileOrigin"));
+	ProjectileOrigin->SetupAttachment(WeaponSprite);
 }
 
 void APlayerPaperCharacter::BeginPlay()
@@ -29,6 +36,7 @@ void APlayerPaperCharacter::BeginPlay()
 	PrimaryWeapon = NewObject<UPlayerWeaponController>(this);
 	
 	PrimaryWeapon->OwningPawn = this;
+	PrimaryWeapon->ProjectileOrigin = ProjectileOrigin;
 	if (PrimaryWeaponData)
 		PrimaryWeapon->SetWeapon(PrimaryWeaponData);
 	else
@@ -40,6 +48,8 @@ void APlayerPaperCharacter::BeginPlay()
 void APlayerPaperCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	RotateWeaponSprite();
 }
 
 void APlayerPaperCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -94,6 +104,38 @@ void APlayerPaperCharacter::FlipSprite(const int Direction)
 		Roll *= -1;
 	
 	GetSprite()->SetRelativeRotation(FRotator(0, 180.0f * Direction, Roll));
+	//WeaponSprite->SetRelativeRotation(FRotator(WeaponSprite->GetRelativeRotation().Pitch, 0, Roll));
+
+	FVector NewWeaponLocation = FVector(
+		WeaponSprite->GetRelativeLocation().X * -1,
+		WeaponSprite->GetRelativeLocation().Y,
+		WeaponSprite->GetRelativeLocation().Z);
+	
+	WeaponSprite->SetRelativeLocation(NewWeaponLocation);
+}
+
+void APlayerPaperCharacter::RotateWeaponSprite()
+{
+	FVector MousePosition = MouseInput::GetMousePosition(GetWorld());
+	FVector AimDirection = MousePosition - GetActorLocation();
+	
+	if (AimDirection.X > 0 && !bIsLookingRight)
+	{
+		FlipSprite(1);
+		bIsLookingRight = true;
+	}
+	else if (AimDirection.X < 0 && bIsLookingRight)
+	{
+		FlipSprite(0);
+		bIsLookingRight = false;
+	}
+	
+	FRotator Rotation = AimDirection.Rotation();
+	
+	FQuat RollQuat = FRotator(0, 0, -90).Quaternion();
+	FQuat PitchQuat = FRotator( Rotation.Yaw * -1 + 135, 0, 0).Quaternion();
+	
+	WeaponSprite->SetRelativeRotation(RollQuat * PitchQuat);
 }
 
 void APlayerPaperCharacter::Move(const FInputActionValue& Value)
@@ -102,10 +144,10 @@ void APlayerPaperCharacter::Move(const FInputActionValue& Value)
 	
 	MovementInput.Normalize();
 	
-	if (MovementInput.X > 0)
+	/*if (MovementInput.X > 0)
 		FlipSprite(1);
 	else if (MovementInput.X < 0)
-		FlipSprite(0);
+		FlipSprite(0);*/
 	
 	AddMovementInput(FVector(MovementInput.X, MovementInput.Y, 0), 1 , false);
 }

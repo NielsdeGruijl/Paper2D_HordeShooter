@@ -39,10 +39,14 @@ void ARangedSlimeEnemy::ExecuteAttackAction()
 		return;
 	}
 	
+	FActorSpawnParameters SpawnInfo;
+	SpawnInfo.Instigator = this;
+	
 	ABaseProjectile* ProjectileObj = GetWorld()->SpawnActor<ABaseProjectile>(
 		Projectile,
 		GetActorLocation(),
-		FRotator(0.0f,0.0f,0.0f));
+		FRotator(0.0f,0.0f,0.0f),
+		SpawnInfo);
 	
 	ProjectileObj->ProjectileMovementComponent->Velocity = LaunchVelocity;
 }

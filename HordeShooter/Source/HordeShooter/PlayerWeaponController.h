@@ -21,6 +21,9 @@ public:
 	UPROPERTY()
 	APawn* OwningPawn;
 	
+	UPROPERTY()
+	USceneComponent* ProjectileOrigin;
+	
 private:
 	UPROPERTY()
 	UWeaponData* WeaponData;

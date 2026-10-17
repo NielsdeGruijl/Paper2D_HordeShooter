@@ -43,8 +43,6 @@ void ABasePaperEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	MovementComponent->MaxSpeed = MaxMoveSpeed;
-	
 	Health->OnDeath.AddUObject(this, &ABasePaperEnemy::Death);
 }
 
@@ -70,15 +68,6 @@ void ABasePaperEnemy::FlipSprite(int Direction)
 
 void ABasePaperEnemy::Idle()
 {
-}
-
-void ABasePaperEnemy::MoveTo(AActor* TargetActor)
-{
-	FVector TargetDirection = TargetActor->GetActorLocation() - GetActorLocation();
-	
-	TargetDirection.Normalize();
-	
-	AddMovementInput(TargetDirection);
 }
 
 void ABasePaperEnemy::Attack(APawn* Target)
@@ -109,4 +98,5 @@ void ABasePaperEnemy::ExecuteAttackAction()
 
 void ABasePaperEnemy::Death()
 {
+	Destroy();
 }

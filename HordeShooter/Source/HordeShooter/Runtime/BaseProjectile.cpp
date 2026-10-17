@@ -15,13 +15,12 @@ ABaseProjectile::ABaseProjectile()
 	
 	ProjectileMovementComponent->InitialSpeed = MovementSpeed;
 	ProjectileMovementComponent->MaxSpeed = MovementSpeed;
-	
-	ProjectileMovementComponent->ProjectileGravityScale = Gravity;
 }
 
 void ABaseProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	ProjectileMovementComponent->ProjectileGravityScale = Gravity;
 }
 
 void ABaseProjectile::Tick(float DeltaTime)

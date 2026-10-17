@@ -6,12 +6,12 @@
 #include "DataAssets/ArcaneProjectileData.h"
 #include "DataAssets/BaseAbilityData.h"
 #include "Engine/World.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "HordeShooter/Runtime/BaseProjectile.h"
 
 void UArcaneProjectile::Start(FVector EntityPosition, FVector AimPosition)
 {
 	Super::Start(EntityPosition, AimPosition);
-	UE_LOG(LogTemp, Warning, TEXT("StartPrimaryAbility"));
 	
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Instigator = Instigator;
@@ -19,14 +19,21 @@ void UArcaneProjectile::Start(FVector EntityPosition, FVector AimPosition)
 	FVector AimDirection = AimPosition - EntityPosition;
 	FRotator AimRotation = AimDirection.Rotation();
 	
-	AActor* Projectile = GetWorld()->SpawnActor<ABaseProjectile>(
-		AbilityData->Projectile, EntityPosition, AimRotation, SpawnParameters);
+	/*EntityPosition = FVector(
+		EntityPosition.X, 
+		EntityPosition.Y, 
+		0.3f);*/
 	
+	ABaseProjectile* Projectile = GetWorld()->SpawnActor<ABaseProjectile>(
+		AbilityData->Projectile, EntityPosition, FRotator::ZeroRotator, SpawnParameters);
+	
+	AimDirection.Normalize();
+	
+	Projectile->ProjectileMovementComponent->Velocity = AimDirection * Projectile->MovementSpeed;
 }
 
 void UArcaneProjectile::Stop()
 {
-	UE_LOG(LogTemp, Warning, TEXT("StopPrimaryAbility"));
 }
 
 void UArcaneProjectile::Initialize(UBaseAbilityData* PAbilityData)

@@ -71,8 +71,6 @@ public:
 	
 	virtual void Idle();
 	
-	virtual void MoveTo(AActor* TargetActor);
-	
 	virtual void Attack(APawn* Target);
 	
 	virtual void ExecuteAttackAction();

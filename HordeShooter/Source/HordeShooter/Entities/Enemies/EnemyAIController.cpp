@@ -2,10 +2,13 @@
 
 
 #include "EnemyAIController.h"
-#include "../Systems/HealthManager.h"
 
+#include "GameFramework/PawnMovementComponent.h"
+#include "Navigation/CrowdFollowingComponent.h"
+#include "Navigation/CrowdManager.h"
 
-AEnemyAIController::AEnemyAIController()
+AEnemyAIController::AEnemyAIController(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 	StateTree = CreateDefaultSubobject<UStateTreeAIComponent>("StateTree");
 	
@@ -17,6 +20,13 @@ AEnemyAIController::AEnemyAIController()
 void AEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+
+	UCrowdFollowingComponent* Crowd = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent());
+	Crowd->SetCrowdSimulationState(ECrowdSimulationState::Enabled);
+	Crowd->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::High);
+	Crowd->SetCrowdSeparation(true);
+	Crowd->SetCrowdSeparationWeight(5);
+	Crowd->SetCrowdCollisionQueryRange(400.f);
 	
 	StateTree->StartLogic();
 }
