@@ -29,7 +29,12 @@ void UArcaneProjectile::Start(FVector EntityPosition, FVector AimPosition)
 	
 	AimDirection.Normalize();
 	
+	if (!Projectile)
+		return;
+	
 	Projectile->ProjectileMovementComponent->Velocity = AimDirection * Projectile->MovementSpeed;
+	
+	Projectile->PenetrationValue = 1;
 }
 
 void UArcaneProjectile::Stop()

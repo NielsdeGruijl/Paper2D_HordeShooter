@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "BaseAbilityData.h"
+#include "HordeShooter/Runtime/MagicCircleDecal.h"
 #include "ChargedExplosionData.generated.h"
 
 class ADecalActor;
@@ -17,14 +18,17 @@ class HORDESHOOTER_API UChargedExplosionData : public UBaseAbilityData
 	
 public:
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<ADecalActor> DecalActor;
+	TSubclassOf<AMagicCircleDecal> OuterDecalActor;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AMagicCircleDecal> InnerDecalActor;
 	
 	UPROPERTY(EditAnywhere)
 	float ChargeDuration;
 	
 	UPROPERTY(EditAnywhere)
-	float MinDecalSize;
+	float MaxInnerRotationSpeed;
 	
 	UPROPERTY(EditAnywhere)
-	float MaxDecalSize;
+	float MaxOuterRotationSpeed;;
 };

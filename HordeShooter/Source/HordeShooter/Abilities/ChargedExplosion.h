@@ -7,6 +7,7 @@
 #include "HordeShooter/Utils/CoroutineManager.h"
 #include "ChargedExplosion.generated.h"
 
+class AMagicCircleDecal;
 class ADecalActor;
 class UChargedExplosionData;
 /**
@@ -20,7 +21,8 @@ private:
 	UPROPERTY()
 	UChargedExplosionData* AbilityData;
 	
-	ADecalActor* DecalActor;
+	AMagicCircleDecal* DecalActor;
+	AMagicCircleDecal* InnerDecalActor;
 
 	FVector FinalPosition;
 	

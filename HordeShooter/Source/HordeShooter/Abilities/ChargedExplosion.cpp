@@ -5,12 +5,11 @@
 
 #include "DrawDebugHelpers.h"
 #include "DataAssets/ChargedExplosionData.h"
-#include "Engine/DecalActor.h"
 #include "Engine/OverlapResult.h"
 #include "Engine/World.h"
 #include "HordeShooter/Entities/Systems/HealthManager.h"
 #include "HordeShooter/Utils/CoroutineManager.h"
-#include "Kismet/KismetSystemLibrary.h"
+#include "HordeShooter/Runtime/MagicCircleDecal.h"
 
 void UChargedExplosion::Start(FVector EntityPosition, FVector AimPosition)
 {
@@ -24,10 +23,13 @@ void UChargedExplosion::Start(FVector EntityPosition, FVector AimPosition)
 	
 	FActorSpawnParameters SpawnParameters;
 	
-	DecalActor = GetWorld()->SpawnActor<ADecalActor>(
-		AbilityData->DecalActor, AimPosition, FRotator::ZeroRotator, SpawnParameters);
+	DecalActor = GetWorld()->SpawnActor<AMagicCircleDecal>(
+		AbilityData->OuterDecalActor, AimPosition, FRotator::ZeroRotator, SpawnParameters);
 	
-	DecalActor->SetActorScale3D(FVector(5, AbilityData->MinDecalSize, AbilityData->MinDecalSize));
+	InnerDecalActor = GetWorld()->SpawnActor<AMagicCircleDecal>(
+		AbilityData->InnerDecalActor, AimPosition, FRotator::ZeroRotator, SpawnParameters);
+	
+	CurrentExplosionRadius = 256;
 	
 	FinalPosition = AimPosition;
 }
@@ -39,7 +41,9 @@ void UChargedExplosion::Stop()
 	ExecuteExplosion();
 	
 	GetWorld()->GetSubsystem<UCoroutineManager>()->StopCoroutine(ChargeCoroutine);
+	
 	DecalActor->Destroy();
+	InnerDecalActor->Destroy();
 }
 
 void UChargedExplosion::Initialize(UBaseAbilityData* PAbilityData)
@@ -52,11 +56,12 @@ void UChargedExplosion::Initialize(UBaseAbilityData* PAbilityData)
 void UChargedExplosion::UpdateCharge(float DeltaTime)
 {
 	float Progress = DeltaTime / AbilityData->ChargeDuration;
-	float CurrentDecalSize = Progress * (AbilityData->MaxDecalSize - AbilityData->MinDecalSize) + AbilityData->MinDecalSize;
 	
-	CurrentExplosionRadius = CurrentDecalSize * 100;
+	DecalActor->ChargeProgress = Progress * 3;
+	InnerDecalActor->ChargeProgress = Progress * 3;
 	
-	DecalActor->SetActorScale3D(FVector(5, CurrentDecalSize, CurrentDecalSize));
+	DecalActor->RotationSpeed = Progress * AbilityData->MaxOuterRotationSpeed * -1;
+	InnerDecalActor->RotationSpeed = Progress * AbilityData->MaxInnerRotationSpeed;
 }
 
 void UChargedExplosion::CompleteCharge()
@@ -74,7 +79,7 @@ void UChargedExplosion::ExecuteExplosion()
 	
 	FCollisionQueryParams QueryParams;
 	
-	//DrawDebugSphere(GetWorld(), FinalPosition, CurrentExplosionRadius, 24, FColor::Green, false, 1.0f);
+	DrawDebugSphere(GetWorld(), FinalPosition, CurrentExplosionRadius, 24, FColor::Green, false, 1.0f);
 	
 	if (GetWorld()->OverlapMultiByObjectType(
 		Overlaps,
@@ -91,13 +96,12 @@ void UChargedExplosion::ExecuteExplosion()
 			if (!Actor)
 				continue;
 			
-			UActorComponent* Component = Result.GetActor()->GetComponentByClass(UHealthManager::StaticClass());
+			UHealthManager* HealthManager = Result.GetActor()->FindComponentByClass<UHealthManager>();
 			
-			if (!Component)
+			if (!HealthManager)
 				continue;
 			
-			UHealthManager* HealthManager = Cast<UHealthManager>(Component);
-			HealthManager->TakeDamage(10);
+			HealthManager->TakeDamage(50);
 		}
 	}
 }

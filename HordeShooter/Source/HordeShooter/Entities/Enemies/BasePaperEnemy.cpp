@@ -9,6 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 #include "HordeShooter/Entities/Systems/HealthManager.h"
+#include "Engine/CollisionProfile.h"
 
 ABasePaperEnemy::ABasePaperEnemy()
 {

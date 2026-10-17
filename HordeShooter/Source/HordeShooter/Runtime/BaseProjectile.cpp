@@ -35,10 +35,15 @@ void ABaseProjectile::NotifyActorBeginOverlap(AActor* OtherActor)
 	if (GetInstigator() && OtherActor == GetInstigator())
 		return;
 	
+	EntitiesPenetrated++;
+	
 	UHealthManager* HealthManager = OtherActor->FindComponentByClass<UHealthManager>();
 	
-	if (!HealthManager)
-		return;
-	
-	HealthManager->TakeDamage(5);
+	if (HealthManager)
+		HealthManager->TakeDamage(5);
+
+	if (EntitiesPenetrated >= PenetrationValue)
+	{
+		Destroy();
+	}
 }

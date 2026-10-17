@@ -23,6 +23,12 @@ public:
 	UPROPERTY()
 	UProjectileMovementComponent* ProjectileMovementComponent;
 	
+	UPROPERTY(EditAnywhere)
+	float PenetrationValue = 1;
+	
+private:
+	float EntitiesPenetrated = 0;
+	
 public:	
 	ABaseProjectile();
 	

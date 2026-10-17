@@ -79,6 +79,6 @@ void AEnemySpawnDirector::IncreaseCredits()
 {
 	CurrentCredits += CreditIncrease;
 	
-	UE_LOG(LogTemp, Warning, TEXT("Credits increased: %d!"), CurrentCredits);
+	//UE_LOG(LogTemp, Warning, TEXT("Credits increased: %d!"), CurrentCredits);
 }
 
