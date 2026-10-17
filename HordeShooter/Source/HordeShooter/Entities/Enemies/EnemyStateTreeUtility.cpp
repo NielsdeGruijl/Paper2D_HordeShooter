@@ -2,7 +2,6 @@
 
 #include "EnemyStateTreeUtility.h"
 
-#include "BaseEnemy.h"
 #include "StateTreeExecutionContext.h"
 #include "StateTreeExecutionTypes.h"
 #include "Kismet/GameplayStatics.h"

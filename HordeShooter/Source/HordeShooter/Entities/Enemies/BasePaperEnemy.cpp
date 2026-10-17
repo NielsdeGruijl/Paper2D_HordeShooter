@@ -44,8 +44,13 @@ void ABasePaperEnemy::BeginPlay()
 	Super::BeginPlay();
 	
 	Health->OnDeath.AddUObject(this, &ABasePaperEnemy::Death);
+	
+	Health->OnHealthChanged.AddLambda([this](float Health)
+	{
+		OnFlashDamage.Broadcast(0.2f);
+	});
 }
-
+		
 void ABasePaperEnemy::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);

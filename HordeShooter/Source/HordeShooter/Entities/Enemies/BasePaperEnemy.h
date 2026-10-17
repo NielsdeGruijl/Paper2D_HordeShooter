@@ -14,12 +14,18 @@ class UHealthManager;
 /**
  * 
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFlashDamage, float, Duration);
+
 UCLASS()
 class HORDESHOOTER_API ABasePaperEnemy : public APawn
 {
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FFlashDamage OnFlashDamage;
+	
 	UPROPERTY(EditAnywhere, Category = "StateTreeValues")
 	float MinimumChaseDistance;
 	
