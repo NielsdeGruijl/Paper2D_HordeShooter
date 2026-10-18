@@ -48,5 +48,8 @@ void ARangedSlimeEnemy::ExecuteAttackAction()
 		FRotator(0.0f,0.0f,0.0f),
 		SpawnInfo);
 	
+	if (!ProjectileObj)
+		return;
+	
 	ProjectileObj->ProjectileMovementComponent->Velocity = LaunchVelocity;
 }

@@ -17,12 +17,6 @@ void UArcaneProjectile::Start(FVector EntityPosition, FVector AimPosition)
 	SpawnParameters.Instigator = Instigator;
 	
 	FVector AimDirection = AimPosition - EntityPosition;
-	FRotator AimRotation = AimDirection.Rotation();
-	
-	/*EntityPosition = FVector(
-		EntityPosition.X, 
-		EntityPosition.Y, 
-		0.3f);*/
 	
 	ABaseProjectile* Projectile = GetWorld()->SpawnActor<ABaseProjectile>(
 		AbilityData->Projectile, EntityPosition, FRotator::ZeroRotator, SpawnParameters);

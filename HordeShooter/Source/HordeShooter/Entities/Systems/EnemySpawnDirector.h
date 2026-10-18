@@ -31,7 +31,10 @@ public:
 	
 	// Duration between enemy spawn attempts in seconds
 	UPROPERTY(EditAnywhere, Category = "Spawning")
-	float SpawnInterval = 1;
+	float MinSpawnInterval = 5;
+	
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	float MaxSpawnInterval = 10;
 	
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	TArray<UEnemySpawnCard*> EnemySpawnCards;

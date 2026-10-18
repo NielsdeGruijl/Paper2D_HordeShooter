@@ -10,6 +10,7 @@
 #include "HordeShooter/PlayerWeaponController.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "HordeShooter/Utils/MouseInput.h"
 
@@ -49,6 +50,8 @@ void APlayerPaperCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	PrimaryWeapon->Update(DeltaTime);
+	
 	RotateWeaponSprite();
 }
 
@@ -74,6 +77,11 @@ void APlayerPaperCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 		Input->BindAction(SecondaryAbilityAction, ETriggerEvent::Started, this, &APlayerPaperCharacter::StartSecondaryAbility);
 		Input->BindAction(SecondaryAbilityAction, ETriggerEvent::Completed, this, &APlayerPaperCharacter::StopSecondaryAbility);
 	}
+}
+
+void APlayerPaperCharacter::AddImpulse(FVector Impulse)
+{
+	LaunchCharacter(Impulse, true, true);
 }
 
 void APlayerPaperCharacter::StartPrimaryAbility(const FInputActionValue& Value)
@@ -143,11 +151,6 @@ void APlayerPaperCharacter::Move(const FInputActionValue& Value)
 	FVector2D MovementInput = Value.Get<FVector2D>();
 	
 	MovementInput.Normalize();
-	
-	/*if (MovementInput.X > 0)
-		FlipSprite(1);
-	else if (MovementInput.X < 0)
-		FlipSprite(0);*/
 	
 	AddMovementInput(FVector(MovementInput.X, MovementInput.Y, 0), 1 , false);
 }

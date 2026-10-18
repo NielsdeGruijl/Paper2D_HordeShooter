@@ -5,7 +5,6 @@
 
 #include "Abilities/DataAssets/BaseAbilityData.h"
 #include "Engine/World.h"
-#include "Kismet/GameplayStatics.h"
 
 UPlayerWeaponController::UPlayerWeaponController()
 {
@@ -16,10 +15,14 @@ void UPlayerWeaponController::SetWeapon(UWeaponData* WeaponToSet)
 	WeaponData = WeaponToSet;
 	
 	PrimaryAbility = WeaponData->PrimaryAbilityData->CreateAbility(this);
-	PrimaryAbility->Instigator = OwningPawn;
+	
+	if (PrimaryAbility)
+		PrimaryAbility->Instigator = OwningPawn;
 	
 	SecondaryAbility = WeaponData->SecondaryAbilityData->CreateAbility(this);
-	SecondaryAbility->Instigator = OwningPawn;
+	
+	if (SecondaryAbility)
+		SecondaryAbility->Instigator = OwningPawn;
 }
 
 void UPlayerWeaponController::StartPrimary()

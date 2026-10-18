@@ -67,6 +67,14 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
+	void AddImpulse(FVector Impulse);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetSpriteOpacity(const float Opacity);
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetSpriteFlash(const float FlashMultiplier, const FLinearColor Colour);
+	
 private:
 	void StartPrimaryAbility(const FInputActionValue& Value);
 	void StopPrimaryAbility(const FInputActionValue& Value);

@@ -32,6 +32,7 @@ void UChargedExplosion::Start(FVector EntityPosition, FVector AimPosition)
 	CurrentExplosionRadius = 256;
 	
 	FinalPosition = AimPosition;
+	ChargeProgress = 0;
 }
 
 void UChargedExplosion::Stop()
@@ -57,6 +58,8 @@ void UChargedExplosion::UpdateCharge(float DeltaTime)
 {
 	float Progress = DeltaTime / AbilityData->ChargeDuration;
 	
+	ChargeProgress = Progress;
+	
 	DecalActor->ChargeProgress = Progress * 3;
 	InnerDecalActor->ChargeProgress = Progress * 3;
 	
@@ -79,7 +82,7 @@ void UChargedExplosion::ExecuteExplosion()
 	
 	FCollisionQueryParams QueryParams;
 	
-	DrawDebugSphere(GetWorld(), FinalPosition, CurrentExplosionRadius, 24, FColor::Green, false, 1.0f);
+	//DrawDebugSphere(GetWorld(), FinalPosition, CurrentExplosionRadius, 24, FColor::Green, false, 1.0f);
 	
 	if (GetWorld()->OverlapMultiByObjectType(
 		Overlaps,
@@ -101,7 +104,7 @@ void UChargedExplosion::ExecuteExplosion()
 			if (!HealthManager)
 				continue;
 			
-			HealthManager->TakeDamage(50);
+			HealthManager->TakeDamage(AbilityData->MaxDamage * ChargeProgress);
 		}
 	}
 }

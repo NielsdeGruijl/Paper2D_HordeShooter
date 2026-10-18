@@ -27,6 +27,8 @@ private:
 	FVector FinalPosition;
 	
 	float CurrentExplosionRadius;
+	
+	float ChargeProgress = 0;
 
 public:
 	void Start(FVector EntityPosition, FVector AimPosition) override;
