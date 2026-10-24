@@ -18,6 +18,12 @@ class HORDESHOOTER_API UBaseAbilityData : public UDataAsset
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY(EditAnywhere, Category = "Base values")
+	float Damage;
+	
+	UPROPERTY(EditAnywhere, Category = "Base values")
+	float Cooldown = 1;
+	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UBaseWeaponAbility> AbilityClass;
 	

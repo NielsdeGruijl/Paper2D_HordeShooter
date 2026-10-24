@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "StateTreeEvaluatorBase.h"
+#include "HordeShooter/EnemyWeaponController.h"
 #include "STE_GetAttackValues.generated.h"
 
-
 USTRUCT()
-struct HORDESHOOTER_API FGetAttackValuesInstanceData
+struct HORDESHOOTER_API FGetAttackPlanInstanceData
 {
 	GENERATED_BODY()
 	
@@ -16,24 +16,18 @@ struct HORDESHOOTER_API FGetAttackValuesInstanceData
 	TObjectPtr<APawn> Pawn;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Output")
-	float MinimumChaseDistance = 0;
+	FPlanOfAttack Plan;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Output")
-	float StopChaseDistance = 0;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Output")
-	float MinimumAttackDistance = 0;
-	
-	UPROPERTY(VisibleAnywhere, Category = "Output")
-	float AttackCooldown = 0;
+	bool bNeedsNewPlan = false;
 };
 
 USTRUCT()
-struct HORDESHOOTER_API FGetAttackValues : public FStateTreeEvaluatorCommonBase
+struct HORDESHOOTER_API FGetAttackPlan : public FStateTreeEvaluatorCommonBase
 {
 	GENERATED_BODY()
 	
-	using FInstanceDataType = FGetAttackValuesInstanceData;
+	using FInstanceDataType = FGetAttackPlanInstanceData;
 	
 	virtual const UStruct* GetInstanceDataType() const override
 	{

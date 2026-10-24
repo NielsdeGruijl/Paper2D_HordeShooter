@@ -11,9 +11,9 @@
 #include "HordeShooter/Utils/CoroutineManager.h"
 #include "HordeShooter/Runtime/MagicCircleDecal.h"
 
-void UChargedExplosion::Start(FVector EntityPosition, FVector AimPosition)
+void UChargedExplosion::StartInternal(FVector EntityPosition, FVector AimPosition)
 {
-	Super::Start(EntityPosition, AimPosition);
+	Super::StartInternal(EntityPosition, AimPosition);
 	
 	Update.BindUFunction(this, FName("UpdateCharge"));
 	Complete.BindUFunction(this, FName("CompleteCharge"));
@@ -104,7 +104,7 @@ void UChargedExplosion::ExecuteExplosion()
 			if (!HealthManager)
 				continue;
 			
-			HealthManager->TakeDamage(AbilityData->MaxDamage * ChargeProgress);
+			HealthManager->TakeDamage(AbilityData->Damage * ChargeProgress);
 		}
 	}
 }

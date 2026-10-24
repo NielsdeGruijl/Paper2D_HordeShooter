@@ -21,31 +21,24 @@ public:
 	UPROPERTY()
 	APawn* OwningPawn;
 	
-	UPROPERTY()
-	USceneComponent* ProjectileOrigin;
-	
-private:
+protected:
 	UPROPERTY()
 	UWeaponData* WeaponData;
 	
-	// variables are created/set in SetWeapon()
 	UPROPERTY()
-	UBaseWeaponAbility* PrimaryAbility;
-	UPROPERTY()
-	UBaseWeaponAbility* SecondaryAbility;
+	TArray<UBaseWeaponAbility*> Abilities;
 	
 public:
-	void SetWeapon(UWeaponData* WeaponToSet);
+	virtual void Initialize(UWeaponData* WeaponToSet);
 	
-	void StartPrimary();
-	void StopPrimary();
+	bool CanStartAbility(int32 AbilityIndex) const;
 	
-	void StartSecondary();
-	void StopSecondary();
+	virtual void StartAbility(int32 AbilityIndex, FVector OriginLocation, FVector TargetLocation);
+	virtual void StopAbility(int32 AbilityIndex);
 	
-	void Update(float DeltaTime);
+	virtual void Update(float DeltaTime);
 	
-private:
+protected:
 	FVector GetAimDirection();
 	FVector GetMousePosition();
 };

@@ -33,7 +33,4 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Damage")
 	float DashWidth;
-	
-	UPROPERTY(EditAnywhere, Category = "Damage")
-	float ContactDamage;
 };

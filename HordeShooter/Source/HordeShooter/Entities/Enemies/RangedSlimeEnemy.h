@@ -16,13 +16,6 @@ class HORDESHOOTER_API ARangedSlimeEnemy : public ABasePaperEnemy
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere, Category = "Combat")
-	TSubclassOf<ABaseProjectile> Projectile;
-	
-	UPROPERTY(EditAnywhere, Category = "Combat")
-	float ProjectileArc;
-	
-public:
 	virtual void BeginPlay() override;
 	
 	virtual void ExecuteAttackAction() override;

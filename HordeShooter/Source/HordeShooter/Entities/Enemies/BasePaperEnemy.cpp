@@ -10,6 +10,7 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "HordeShooter/Entities/Systems/HealthManager.h"
 #include "Engine/CollisionProfile.h"
+#include "HordeShooter/EnemyWeaponController.h"
 
 ABasePaperEnemy::ABasePaperEnemy()
 {
@@ -25,6 +26,9 @@ ABasePaperEnemy::ABasePaperEnemy()
 	Sprite = CreateDefaultSubobject<UPaperFlipbookComponent>("Sprite");
 	Sprite->SetupAttachment(RootComponent);
 	
+	AttackOrigin = CreateDefaultSubobject<USceneComponent>("AttackOrigin");
+	AttackOrigin->SetupAttachment(Sprite);
+	
 	AnimationComponent->InitRenderComponent(Sprite);
 	
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
@@ -38,6 +42,8 @@ void ABasePaperEnemy::PostInitializeComponents()
 	{
 		AnimationComponent->InitRenderComponent(Sprite);
 	}
+	
+	WeaponController = NewObject<UEnemyWeaponController>(this);
 }
 
 void ABasePaperEnemy::BeginPlay()
@@ -50,11 +56,32 @@ void ABasePaperEnemy::BeginPlay()
 	{
 		OnFlashDamage.Broadcast(0.2f);
 	});
+	
+	if (WeaponController)
+	{
+		WeaponController->OwningPawn = this;
+		WeaponController->Initialize(WeaponData);
+	}
 }
 		
 void ABasePaperEnemy::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	
+	WeaponController->Update(DeltaSeconds);
+	
+	if (MovementComponent->Velocity.X > 0 && !bIsFlipped)
+		FlipSprite(0);
+	else if (MovementComponent->Velocity.X < 0 && !bIsFlipped)
+		FlipSprite(1);
+}
+
+UEnemyWeaponController* ABasePaperEnemy::GetWeapon() const
+{
+	if (!WeaponController)
+		return nullptr;
+	
+	return WeaponController;
 }
 
 bool ABasePaperEnemy::GetIsWalking()
@@ -76,13 +103,20 @@ void ABasePaperEnemy::Idle()
 {
 }
 
-void ABasePaperEnemy::Attack(APawn* Target)
+void ABasePaperEnemy::Attack(int AbilityIndex, APawn* Target)
 {
+	WeaponController->CurrentPlan.bIsExecuting = true;
+	
 	if (!AnimationComponent->GetOrCreateAnimInstance())
 	{
 		UE_LOG(LogTemp, Error, TEXT("NO ANIMATION INSTANCE"));
 		return;
 	}
+	
+	CurrentAbilityIndex = AbilityIndex;
+	
+	if (WeaponController && !WeaponController->CanStartAbility(AbilityIndex))
+		return;
 	
 	if (!TargetToAttack || TargetToAttack != Target)
 		TargetToAttack = Target;
@@ -99,7 +133,13 @@ void ABasePaperEnemy::Attack(APawn* Target)
 
 void ABasePaperEnemy::ExecuteAttackAction()
 {
-		
+	if (!WeaponController)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Weapon controller is nullptr"));
+		return;
+	}
+	
+	WeaponController->StartAbility(CurrentAbilityIndex, AttackOrigin->GetComponentLocation(), TargetToAttack->GetActorLocation());
 }
 
 void ABasePaperEnemy::Death()

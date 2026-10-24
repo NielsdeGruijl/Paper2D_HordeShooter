@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "BasePaperEnemy.generated.h"
 
+class UEnemyWeaponController;
+class UWeaponData;
 class UCapsuleComponent;
 class UPaperFlipbookComponent;
 class UFloatingPawnMovement;
@@ -26,17 +28,11 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FFlashDamage OnFlashDamage;
 	
-	UPROPERTY(EditAnywhere, Category = "StateTreeValues")
-	float MinimumChaseDistance;
-	
-	UPROPERTY(EditAnywhere, Category = "StateTreeValues")
-	float MinimumAttackDistance;
-	
-	UPROPERTY(EditAnywhere, Category = "StateTreeValues")
-	float AttackCooldown;
-	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	float MaxMoveSpeed = 500;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	UWeaponData* WeaponData;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	float AttackDamage = 1;
@@ -56,9 +52,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
 	UHealthManager* Health;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
+	USceneComponent* AttackOrigin;
+	
 protected:
 	UPROPERTY()
+	UEnemyWeaponController* WeaponController;
+	
+	UPROPERTY()
 	APawn* TargetToAttack;
+	
+	bool bIsFlipped = false;
+	
+	bool bCanAttack = true;
+	
+	float CurrentAbilityIndex = 0;
 	
 public:
 	ABasePaperEnemy();
@@ -69,6 +77,8 @@ public:
 	
 	virtual void Tick( float DeltaSeconds ) override;
 	
+	UEnemyWeaponController* GetWeapon() const;
+	
 	UFUNCTION(BlueprintCallable)
 	bool GetIsWalking();
 	
@@ -77,7 +87,7 @@ public:
 	
 	virtual void Idle();
 	
-	virtual void Attack(APawn* Target);
+	virtual void Attack(int AbilityIndex, APawn* Target);
 	
 	virtual void ExecuteAttackAction();
 	

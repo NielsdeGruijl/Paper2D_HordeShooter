@@ -10,45 +10,59 @@ UPlayerWeaponController::UPlayerWeaponController()
 {
 }
 
-void UPlayerWeaponController::SetWeapon(UWeaponData* WeaponToSet)
+void UPlayerWeaponController::Initialize(UWeaponData* WeaponToSet)
 {
 	WeaponData = WeaponToSet;
 	
-	PrimaryAbility = WeaponData->PrimaryAbilityData->CreateAbility(this);
+	for (int32 i = 0; i < WeaponData->Abilities.Num(); i++)
+	{
+		Abilities.Add(WeaponData->Abilities[i]->CreateAbility(this));
+		Abilities[i]->Instigator = OwningPawn;
+	}
+}
+
+bool UPlayerWeaponController::CanStartAbility(int32 AbilityIndex) const
+{
+	if (AbilityIndex >= Abilities.Num() || !Abilities[AbilityIndex])
+	{
+		UE_LOG(LogTemp,Warning, TEXT("AbilityIndex is out of range or Ability does not exist"))
+		return false;
+	}
 	
-	if (PrimaryAbility)
-		PrimaryAbility->Instigator = OwningPawn;
+	return !Abilities[AbilityIndex]->GetOnCooldown();
+}
+
+void UPlayerWeaponController::StartAbility(int32 AbilityIndex, FVector OriginLocation, FVector TargetLocation)
+{
+	if (AbilityIndex >= Abilities.Num() || !Abilities[AbilityIndex])
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Could not start ability, AbilityIndex is out of range or Ability does not exist"))
+		return;
+	}
 	
-	SecondaryAbility = WeaponData->SecondaryAbilityData->CreateAbility(this);
+	Abilities[AbilityIndex]->Start(OriginLocation, TargetLocation);
+}
+
+void UPlayerWeaponController::StopAbility(int32 AbilityIndex)
+{
+	if (AbilityIndex >= Abilities.Num() || !Abilities[AbilityIndex])
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Could not stop ability, AbilityIndex is out of range or Ability does not exist"))
+		return;
+	}
 	
-	if (SecondaryAbility)
-		SecondaryAbility->Instigator = OwningPawn;
-}
-
-void UPlayerWeaponController::StartPrimary()
-{
-	PrimaryAbility->Start(ProjectileOrigin->GetComponentLocation(), GetMousePosition() + FVector::ZAxisVector * ProjectileOrigin->GetComponentLocation().Z);
-}
-
-void UPlayerWeaponController::StopPrimary()
-{
-	PrimaryAbility->Stop();
-}
-
-void UPlayerWeaponController::StartSecondary()
-{
-	SecondaryAbility->Start(ProjectileOrigin->GetComponentLocation(), GetMousePosition() + FVector::ZAxisVector * ProjectileOrigin->GetComponentLocation().Z);
-}
-
-void UPlayerWeaponController::StopSecondary()
-{
-	SecondaryAbility->Stop();
+	Abilities[AbilityIndex]->Stop();
 }
 
 void UPlayerWeaponController::Update(float DeltaTime)
 {
-	PrimaryAbility->Update(DeltaTime);
-	SecondaryAbility->Update(DeltaTime);
+	for (UBaseWeaponAbility* Ability : Abilities)
+	{
+		if (!Ability)
+			continue;
+		
+		Ability->Update(DeltaTime);
+	}
 }
 
 FVector UPlayerWeaponController::GetAimDirection()

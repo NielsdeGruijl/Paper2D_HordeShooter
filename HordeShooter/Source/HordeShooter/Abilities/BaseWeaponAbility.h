@@ -19,15 +19,26 @@ public:
 	UPROPERTY()
 	APawn* Instigator;
 	
+protected:
+	FTimerHandle CooldownTimer;
+	
+	FTimerDelegate CooldownTimerDelegate;
+
+	bool bOnCooldown = false;
+	
 private:
 	UPROPERTY()
 	UBaseAbilityData* Data;
 
 public:
-	virtual void Start(FVector EntityPosition, FVector AimPosition);
+	bool Start(FVector EntityPosition, FVector AimPosition);
+	
+	virtual void StartInternal(FVector EntityPosition, FVector AimPosition);
 	virtual void Stop();
 	
 	virtual void Update(float DeltaTime);
 	
-	virtual void Initialize(UBaseAbilityData* AbilityData);
+	virtual void Initialize(UBaseAbilityData* pAbilityData);
+	
+	bool GetOnCooldown() const;
 };

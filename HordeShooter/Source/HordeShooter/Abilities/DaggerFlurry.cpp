@@ -10,9 +10,9 @@
 #include "HordeShooter/Entities/Systems/HealthManager.h"
 #include "MVVM/Views/KeyRenderer.h"
 
-void UDaggerFlurry::Start(FVector EntityPosition, FVector AimPosition)
+void UDaggerFlurry::StartInternal(FVector EntityPosition, FVector AimPosition)
 {
-	Super::Start(EntityPosition, AimPosition);
+	Super::StartInternal(EntityPosition, AimPosition);
 	
 	if (CurrentAttackCombo >= MaxDaggerCombo && !bIsOnCooldown)
 	{

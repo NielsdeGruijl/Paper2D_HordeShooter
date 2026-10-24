@@ -79,8 +79,10 @@ struct HORDESHOOTER_API FGetPlayerTask : public FStateTreeAITaskBase
 	GENERATED_BODY()
 	
 	using FInstanceDataType = FGetPlayerTaskInstanceData;
-	virtual const UStruct* GetInstanceDataType() const override 
-	{ return FInstanceDataType::StaticStruct(); }
+	virtual const UStruct* GetInstanceDataType() const override
+	{
+		return FInstanceDataType::StaticStruct();
+	}
 	
 	virtual EStateTreeRunStatus Tick(FStateTreeExecutionContext& Context, const float DeltaTime) const override;
 	

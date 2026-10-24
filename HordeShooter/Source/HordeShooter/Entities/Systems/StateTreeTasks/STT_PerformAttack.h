@@ -19,6 +19,9 @@ struct HORDESHOOTER_API FPerformAttackInstanceData
 	
 	UPROPERTY(VisibleAnywhere, Category = "Context")
 	TObjectPtr<APawn> Pawn;
+	
+	UPROPERTY(VisibleAnywhere, Category = "Input")
+	int AttackAbilityIndex;
 };
 
 USTRUCT()

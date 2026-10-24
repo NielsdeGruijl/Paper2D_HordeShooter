@@ -22,10 +22,7 @@ public:
 	UPaperSprite* WeaponSprite;
 	
 	UPROPERTY(EditAnywhere)
-	UBaseAbilityData* PrimaryAbilityData;
-		
-	UPROPERTY(EditAnywhere)
-	UBaseAbilityData* SecondaryAbilityData;
+	TArray<UBaseAbilityData*> Abilities;
 	
 	UPROPERTY(EditAnywhere)
 	float Damage;

@@ -5,12 +5,11 @@
 
 #include "PaperFlipbookComponent.h"
 #include "Components/BoxComponent.h"
-#include "HordeShooter/Entities/Systems/HealthManager.h"
 
 ASlimeEnemy::ASlimeEnemy() 
 {
-	AttackCollider = CreateDefaultSubobject<UBoxComponent>("AttackCollider");
-	AttackCollider->SetupAttachment(Sprite);
+	/*AttackCollider = CreateDefaultSubobject<UBoxComponent>("AttackCollider");
+	AttackCollider->SetupAttachment(Sprite);*/
 }
 
 void ASlimeEnemy::BeginPlay()
@@ -22,7 +21,7 @@ void ASlimeEnemy::ExecuteAttackAction()
 {
 	Super::ExecuteAttackAction();
 	
-	TArray<AActor*> actors;
+	/*TArray<AActor*> actors;
 	AttackCollider->GetOverlappingActors(actors);
 	
 	for (AActor* actor : actors)
@@ -34,5 +33,5 @@ void ASlimeEnemy::ExecuteAttackAction()
 		{
 			Healthmanager->TakeDamage(AttackDamage);
 		}
-	}
+	}*/
 }

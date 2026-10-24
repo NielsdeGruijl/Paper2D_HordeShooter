@@ -9,9 +9,9 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "HordeShooter/Runtime/BaseProjectile.h"
 
-void UArcaneProjectile::Start(FVector EntityPosition, FVector AimPosition)
+void UArcaneProjectile::StartInternal(FVector EntityPosition, FVector AimPosition)
 {
-	Super::Start(EntityPosition, AimPosition);
+	Super::StartInternal(EntityPosition, AimPosition);
 	
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.Instigator = Instigator;

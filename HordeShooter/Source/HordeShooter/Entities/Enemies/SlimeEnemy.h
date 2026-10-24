@@ -16,8 +16,8 @@ class HORDESHOOTER_API ASlimeEnemy : public ABasePaperEnemy
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
-	UBoxComponent* AttackCollider;
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
+	UBoxComponent* AttackCollider;*/
 	
 public:
 	ASlimeEnemy();

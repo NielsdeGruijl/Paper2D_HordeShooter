@@ -10,7 +10,6 @@
 #include "HordeShooter/PlayerWeaponController.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "HordeShooter/Utils/MouseInput.h"
 
@@ -37,9 +36,9 @@ void APlayerPaperCharacter::BeginPlay()
 	PrimaryWeapon = NewObject<UPlayerWeaponController>(this);
 	
 	PrimaryWeapon->OwningPawn = this;
-	PrimaryWeapon->ProjectileOrigin = ProjectileOrigin;
+	
 	if (PrimaryWeaponData)
-		PrimaryWeapon->SetWeapon(PrimaryWeaponData);
+		PrimaryWeapon->Initialize(PrimaryWeaponData);
 	else
 		UE_LOG(LogTemp, Error, TEXT("NO PRIMARY WEAPON DATA FOUND"));
 	
@@ -86,22 +85,22 @@ void APlayerPaperCharacter::AddImpulse(FVector Impulse)
 
 void APlayerPaperCharacter::StartPrimaryAbility(const FInputActionValue& Value)
 {
-	PrimaryWeapon->StartPrimary();
+	PrimaryWeapon->StartAbility(0, ProjectileOrigin->GetComponentLocation(), MouseInput::GetMousePosition(GetWorld()));
 }
 
 void APlayerPaperCharacter::StopPrimaryAbility(const FInputActionValue& Value)
 {
-	PrimaryWeapon->StopPrimary();
+	PrimaryWeapon->StopAbility(0);
 }
 
 void APlayerPaperCharacter::StartSecondaryAbility(const FInputActionValue& Value)
 {
-	PrimaryWeapon->StartSecondary();
+	PrimaryWeapon->StartAbility(1, ProjectileOrigin->GetComponentLocation(), MouseInput::GetMousePosition(GetWorld()));
 }
 
 void APlayerPaperCharacter::StopSecondaryAbility(const FInputActionValue& Value)
 {
-	PrimaryWeapon->StopSecondary();
+	PrimaryWeapon->StopAbility(1);
 }
 
 void APlayerPaperCharacter::FlipSprite(const int Direction)

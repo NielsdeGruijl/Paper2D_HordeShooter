@@ -3,9 +3,7 @@
 
 #include "EnemyAIController.h"
 
-#include "GameFramework/PawnMovementComponent.h"
 #include "Navigation/CrowdFollowingComponent.h"
-#include "Navigation/CrowdManager.h"
 
 AEnemyAIController::AEnemyAIController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

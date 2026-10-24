@@ -31,7 +31,4 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	float MaxOuterRotationSpeed;
-	
-	UPROPERTY(EditAnywhere)
-	float MaxDamage;
 };

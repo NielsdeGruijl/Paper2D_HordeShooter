@@ -9,7 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 
 EStateTreeRunStatus FPerformAttack::EnterState(FStateTreeExecutionContext& Context,
-                                               const FStateTreeTransitionResult& Transition) const
+	const FStateTreeTransitionResult& Transition) const
 {
 	FPerformAttackInstanceData& InstanceData = Context.GetInstanceData(*this);
 	
@@ -20,10 +20,11 @@ EStateTreeRunStatus FPerformAttack::EnterState(FStateTreeExecutionContext& Conte
 	
 	if (!Enemy)
 	{
+		UE_LOG(LogTemp, Error, TEXT("Enemy pawn is nullptr"));
 		return EStateTreeRunStatus::Failed;
 	}
 	
-	Enemy->Attack(Player);
+	Enemy->Attack(InstanceData.AttackAbilityIndex, Player);
 	
 	return EStateTreeRunStatus::Succeeded;
 }

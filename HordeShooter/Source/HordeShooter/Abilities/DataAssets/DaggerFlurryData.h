@@ -24,7 +24,4 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	float MaxTimeBetweenAttacks;
-	
-	UPROPERTY(EditAnywhere)
-	float Damage;
 };

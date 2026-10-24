@@ -12,9 +12,9 @@
 #include "HordeShooter/Entities/Systems/HealthManager.h"
 #include "HordeShooter/Runtime/SpriteVFXActor.h"
 
-void UDaggerDash::Start(FVector EntityPosition, FVector AimPosition)
+void UDaggerDash::StartInternal(FVector EntityPosition, FVector AimPosition)
 {
-	Super::Start(EntityPosition, AimPosition);
+	Super::StartInternal(EntityPosition, AimPosition);
 	
 	if (!Player)
 	{
@@ -128,7 +128,7 @@ void UDaggerDash::UpdateDashCollisions()
 		
 		if (UHealthManager* HealthManager = HitActor->FindComponentByClass<UHealthManager>())
 		{
-			HealthManager->TakeDamage(AbilityData->ContactDamage);
+			HealthManager->TakeDamage(AbilityData->Damage);
 		}
 	}
 }
