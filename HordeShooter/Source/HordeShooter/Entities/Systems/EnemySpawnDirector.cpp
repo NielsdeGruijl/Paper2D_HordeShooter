@@ -3,13 +3,14 @@
 
 #include "EnemySpawnDirector.h"
 
+#include "GameFramework/Character.h"
 #include "HordeShooter/Entities/DataAssets/EnemySpawnCard.h"
 #include "HordeShooter/Runtime/EnemySpawner.h"
+#include "Kismet/GameplayStatics.h"
 
 AEnemySpawnDirector::AEnemySpawnDirector()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 void AEnemySpawnDirector::BeginPlay()
@@ -17,6 +18,9 @@ void AEnemySpawnDirector::BeginPlay()
 	Super::BeginPlay();
 	
 	CurrentCredits = StartingCredits;
+	
+	if (!DefaultTarget)
+		DefaultTarget = Cast<ACharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	
 	TrySpawnEnemies();
 	
@@ -26,7 +30,6 @@ void AEnemySpawnDirector::BeginPlay()
 void AEnemySpawnDirector::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AEnemySpawnDirector::TrySpawnEnemies()
@@ -34,6 +37,12 @@ void AEnemySpawnDirector::TrySpawnEnemies()
 	if (Spawners.Num() == 0)
 	{
 		UE_LOG(LogTemp, Error, TEXT("No spawners active!"))
+		return;
+	}
+	
+	if (CurrentPresentEnemyCount >= MaxPresentEnemies)
+	{
+		UE_LOG(LogTemp,Warning, TEXT("Max present enemies exceeded!"))
 		return;
 	}
 	
@@ -51,7 +60,7 @@ void AEnemySpawnDirector::TrySpawnEnemies()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No affordable enemy card found!"))
 		
-		float ActualInterval = FMath::RandRange(0.0f, 30.0f);
+		float ActualInterval = FMath::RandRange(MinSpawnInterval, MaxSpawnInterval);
 		
 		GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &AEnemySpawnDirector::TrySpawnEnemies, ActualInterval, false);
 		return;
@@ -61,16 +70,18 @@ void AEnemySpawnDirector::TrySpawnEnemies()
 	
 	UEnemySpawnCard* SpawnCard = SpawnCardCandidates[CardIndex];
 	
-	while (CurrentCredits > SpawnCard->CreditCost)
+	while (CurrentCredits > SpawnCard->CreditCost && CurrentPresentEnemyCount < MaxPresentEnemies)
 	{
 		CurrentCredits -= SpawnCard->CreditCost;
 		
 		int SpawnerIndex = FMath::RandRange(0, Spawners.Num() - 1);
 		
-		Spawners[SpawnerIndex]->SpawnEnemy(SpawnCard);
+		Spawners[SpawnerIndex]->SpawnEnemy(SpawnCard, DefaultTarget);
+		
+		CurrentPresentEnemyCount++;
 	}
 	
-	float ActualInterval = FMath::RandRange(0.0f, 30.0f);
+	float ActualInterval = FMath::RandRange(MinSpawnInterval, MaxSpawnInterval);
 		
 	GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &AEnemySpawnDirector::TrySpawnEnemies, ActualInterval, false);
 }

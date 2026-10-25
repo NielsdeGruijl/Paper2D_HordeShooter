@@ -17,8 +17,6 @@ AEnemyAIController::AEnemyAIController(const FObjectInitializer& ObjectInitializ
 
 void AEnemyAIController::OnPossess(APawn* InPawn)
 {
-	Super::OnPossess(InPawn);
-
 	UCrowdFollowingComponent* Crowd = Cast<UCrowdFollowingComponent>(GetPathFollowingComponent());
 	Crowd->SetCrowdSimulationState(ECrowdSimulationState::Enabled);
 	Crowd->SetCrowdAvoidanceQuality(ECrowdAvoidanceQuality::High);
@@ -26,14 +24,14 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 	Crowd->SetCrowdSeparationWeight(5);
 	Crowd->SetCrowdCollisionQueryRange(400.f);
 	
-	StateTree->StartLogic();
+	//UE_LOG(LogTemp, Error, TEXT("STARTING STATETREE LOGIC"))
+	Super::OnPossess(InPawn);
+	//UE_LOG(LogTemp, Error, TEXT("FINISHED STARTING STATETREE LOGIC"))
 }
 
 void AEnemyAIController::OnUnPossess()
 {
 	Super::OnUnPossess();
-	
-	
 }
 
 void AEnemyAIController::OnPawnHealthChanged(float NewHealth)

@@ -42,14 +42,15 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	TArray<AEnemySpawner*> Spawners;
 	
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	TObjectPtr<APawn> DefaultTarget;
+	
 private:
 	UPROPERTY()
 	FTimerHandle SpawnTimerHandle;
 	
 	UPROPERTY()
 	FTimerHandle CreditTimerHandle;
-	
-
 	
 	int CurrentPresentEnemyCount = 0;
 	

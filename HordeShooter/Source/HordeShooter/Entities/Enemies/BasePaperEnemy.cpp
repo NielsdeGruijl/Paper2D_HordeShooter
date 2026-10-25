@@ -63,6 +63,9 @@ void ABasePaperEnemy::BeginPlay()
 		WeaponController->Initialize(WeaponData);
 	}
 	
+	if (!CurrentTarget && DebugTarget)
+		CurrentTarget = DebugTarget;
+	
 	WeaponController->bIsDebugging = &bDebugWeaponController;
 }
 		
@@ -86,11 +89,6 @@ UEnemyWeaponController* ABasePaperEnemy::GetWeapon() const
 	return WeaponController;
 }
 
-bool ABasePaperEnemy::GetIsWalking()
-{
-	return MovementComponent->Velocity.Length() > 0;
-}
-
 void ABasePaperEnemy::FlipSprite(int Direction)
 {
 	float Roll = 30;
@@ -101,11 +99,7 @@ void ABasePaperEnemy::FlipSprite(int Direction)
 	Sprite->SetRelativeRotation(FRotator(0, 180.0f * Direction, Roll));
 }
 
-void ABasePaperEnemy::Idle()
-{
-}
-
-void ABasePaperEnemy::Attack(int AbilityIndex, APawn* Target)
+void ABasePaperEnemy::Attack(int AbilityIndex)
 {
 	WeaponController->CurrentPlan.bIsExecuting = true;
 	
@@ -120,10 +114,7 @@ void ABasePaperEnemy::Attack(int AbilityIndex, APawn* Target)
 	if (WeaponController && !WeaponController->CanStartAbility(AbilityIndex))
 		return;
 	
-	if (!TargetToAttack || TargetToAttack != Target)
-		TargetToAttack = Target;
-	
-	float direction = Target->GetActorLocation().X - GetActorLocation().X;
+	float direction = CurrentTarget->GetActorLocation().X - GetActorLocation().X;
 	
 	if (direction < 0)
 		FlipSprite(0);
@@ -141,7 +132,17 @@ void ABasePaperEnemy::ExecuteAttackAction()
 		return;
 	}
 	
-	WeaponController->StartAbility(CurrentAbilityIndex, AttackOrigin->GetComponentLocation(), TargetToAttack->GetActorLocation());
+	WeaponController->StartAbility(CurrentAbilityIndex, AttackOrigin->GetComponentLocation(), CurrentTarget->GetActorLocation());
+}
+
+void ABasePaperEnemy::PullAggro(APawn* NewTarget)
+{
+	CurrentTarget = NewTarget;
+}
+
+TObjectPtr<APawn> ABasePaperEnemy::GetTarget()
+{
+	return CurrentTarget;
 }
 
 void ABasePaperEnemy::Death()

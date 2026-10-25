@@ -23,5 +23,5 @@ void ABaseBossEnemy::ExecuteAttackAction()
 		return;
 	}
 	
-	WeaponController->StartAbility(CurrentAbilityIndex, AttackOrigin->GetComponentLocation(), TargetToAttack->GetActorLocation(), Sprite->GetUpVector());
+	WeaponController->StartAbility(CurrentAbilityIndex, AttackOrigin->GetComponentLocation(), CurrentTarget->GetActorLocation(), Sprite->GetUpVector());
 }

@@ -22,7 +22,7 @@ public:
 	
 	virtual void Tick(float DeltaTime) override;
 	
-	void SpawnEnemy(UEnemySpawnCard* SpawnCard);
+	void SpawnEnemy(UEnemySpawnCard* SpawnCard, TObjectPtr<APawn> DefaultTarget);
 	
 private:
 };

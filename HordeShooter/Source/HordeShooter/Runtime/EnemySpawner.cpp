@@ -27,12 +27,12 @@ void AEnemySpawner::Tick(float DeltaTime)
 
 }
 
-void AEnemySpawner::SpawnEnemy(UEnemySpawnCard* SpawnCard)
+void AEnemySpawner::SpawnEnemy(UEnemySpawnCard* SpawnCard, TObjectPtr<APawn> DefaultTarget)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Spawning enemy!"))
 	
 	FActorSpawnParameters SpawnParams;
 	FVector SpawnLocation = GetActorLocation() + FVector(0,0,SpawnCard->ZOffset);
 	
-	GetWorld()->SpawnActor<ABasePaperEnemy>(SpawnCard->EnemyClass, SpawnLocation, GetActorRotation(), SpawnParams);
+	GetWorld()->SpawnActor<ABasePaperEnemy>(SpawnCard->EnemyClass, SpawnLocation, GetActorRotation(), SpawnParams)->PullAggro(DefaultTarget);
 }

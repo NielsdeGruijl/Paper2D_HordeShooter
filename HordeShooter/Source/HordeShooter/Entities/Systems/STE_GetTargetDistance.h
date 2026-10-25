@@ -11,6 +11,7 @@
  * 
  */
 
+class ABasePaperEnemy;
 class ABaseEnemy;
 
 USTRUCT()
@@ -19,7 +20,7 @@ struct HORDESHOOTER_API FGetDistanceToTargetInstanceData
 	GENERATED_BODY()
 	
 	UPROPERTY(VisibleAnywhere, Category = "Context")
-	TObjectPtr<APawn> Pawn;
+	TObjectPtr<ABasePaperEnemy> Pawn;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Output")
 	float Distance;

@@ -4,9 +4,7 @@
 #include "STE_GetTargetDistance.h"
 
 #include "StateTreeExecutionContext.h"
-#include "GameFramework/Character.h"
-#include "Kismet/GameplayStatics.h"
-
+#include "HordeShooter/Entities/Enemies/BasePaperEnemy.h"
 
 void FGetDistanceToTarget::TreeStart(FStateTreeExecutionContext& Context) const
 {
@@ -19,21 +17,22 @@ void FGetDistanceToTarget::Tick(FStateTreeExecutionContext& Context, const float
 {
 	FStateTreeEvaluatorCommonBase::Tick(Context, DeltaTime);
 	
+
+	
 	FGetDistanceToTargetInstanceData& InstanceData =
 		Context.GetInstanceData(*this);
 	
-	ACharacter* Player = 
-		Cast<ACharacter>(UGameplayStatics::GetPlayerPawn(Context.GetWorld(), 0));
+	TObjectPtr<APawn> Target = InstanceData.Pawn->GetTarget();
 	
-	if (!Player)
+	if (!Target)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Player is nullptr"));
+		//UE_LOG(LogTemp, Error, TEXT("Target is nullptr"));
 		
 		InstanceData.Distance = 0;
 		return;
 	}
 	
-	FVector Diff = Player->GetActorLocation() - InstanceData.Pawn->GetActorLocation();
+	FVector Diff = Target->GetActorLocation() - InstanceData.Pawn->GetActorLocation();
 	
 	InstanceData.Distance = Diff.Length();
 	

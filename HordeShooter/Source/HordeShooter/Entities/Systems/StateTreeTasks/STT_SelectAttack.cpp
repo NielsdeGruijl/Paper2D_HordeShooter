@@ -16,9 +16,6 @@ EStateTreeRunStatus FSelectAttack::EnterState(FStateTreeExecutionContext& Contex
 	
 	ABasePaperEnemy* Enemy = Cast<ABasePaperEnemy>(InstanceData.Pawn);
 	
-	ACharacter* Player = 
-		Cast<ACharacter>(UGameplayStatics::GetPlayerPawn(Context.GetWorld(), 0));
-	
 	if (!Enemy)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Enemy pawn is nullptr"));
@@ -31,7 +28,7 @@ EStateTreeRunStatus FSelectAttack::EnterState(FStateTreeExecutionContext& Contex
 		return EStateTreeRunStatus::Failed;
 	}
 	
-	bool bSuccessfullyFormulatedPlan = Enemy->GetWeapon()->FormulatePlan(*Player);
+	bool bSuccessfullyFormulatedPlan = Enemy->GetWeapon()->FormulatePlan(*Enemy->GetTarget());
 	
 	if (!bSuccessfullyFormulatedPlan)
 	{

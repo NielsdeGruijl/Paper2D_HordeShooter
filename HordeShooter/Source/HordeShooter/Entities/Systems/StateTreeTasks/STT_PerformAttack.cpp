@@ -4,9 +4,7 @@
 #include "STT_PerformAttack.h"
 
 #include "StateTreeExecutionContext.h"
-#include "GameFramework/Character.h"
 #include "HordeShooter/Entities/Enemies/BasePaperEnemy.h"
-#include "Kismet/GameplayStatics.h"
 
 EStateTreeRunStatus FPerformAttack::EnterState(FStateTreeExecutionContext& Context,
 	const FStateTreeTransitionResult& Transition) const
@@ -15,16 +13,7 @@ EStateTreeRunStatus FPerformAttack::EnterState(FStateTreeExecutionContext& Conte
 	
 	ABasePaperEnemy* Enemy = Cast<ABasePaperEnemy>(InstanceData.Pawn);
 	
-	ACharacter* Player = 
-		Cast<ACharacter>(UGameplayStatics::GetPlayerPawn(Context.GetWorld(), 0));
-	
-	if (!Enemy)
-	{
-		UE_LOG(LogTemp, Error, TEXT("Enemy pawn is nullptr"));
-		return EStateTreeRunStatus::Failed;
-	}
-	
-	Enemy->Attack(InstanceData.AttackAbilityIndex, Player);
+	Enemy->Attack(InstanceData.AttackAbilityIndex);
 	
 	return EStateTreeRunStatus::Succeeded;
 }

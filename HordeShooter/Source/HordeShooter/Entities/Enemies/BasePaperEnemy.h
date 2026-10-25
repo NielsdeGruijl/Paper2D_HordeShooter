@@ -34,9 +34,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	UWeaponData* WeaponData;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Combat")
-	float AttackDamage = 1;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
 	UCapsuleComponent* Capsule;
 	
@@ -54,16 +51,23 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* AttackOrigin;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Debugging")
+	TObjectPtr<APawn> DebugTarget;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Debugging")
 	bool bDebugWeaponController = false;
+	
 	
 protected:
 	UPROPERTY()
 	UEnemyWeaponController* WeaponController;
 	
 	UPROPERTY()
-	APawn* TargetToAttack;
+	TObjectPtr<APawn> PreviousTarget;
+	
+	UPROPERTY()
+	TObjectPtr<APawn> CurrentTarget;
 	
 	bool bIsFlipped = false;
 	
@@ -83,16 +87,15 @@ public:
 	UEnemyWeaponController* GetWeapon() const;
 	
 	UFUNCTION(BlueprintCallable)
-	bool GetIsWalking();
-	
-	UFUNCTION(BlueprintCallable)
 	void FlipSprite(int Direction);
 	
-	virtual void Idle();
-	
-	virtual void Attack(int AbilityIndex, APawn* Target);
+	virtual void Attack(int AbilityIndex);
 	
 	virtual void ExecuteAttackAction();
+	
+	virtual void PullAggro(APawn* NewTarget);
+	
+	TObjectPtr<APawn> GetTarget();
 	
 	virtual void Death();
 };

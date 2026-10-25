@@ -12,7 +12,7 @@ void FGetAttackPlan::TreeStart(FStateTreeExecutionContext& Context) const
 {
 	FStateTreeEvaluatorCommonBase::TreeStart(Context);
 	
-	FGetAttackPlanInstanceData& InstanceData =
+	/*FGetAttackPlanInstanceData& InstanceData =
 		Context.GetInstanceData(*this);
 	
 	ABasePaperEnemy* Enemy = Cast<ABasePaperEnemy>(InstanceData.Pawn);
@@ -23,7 +23,7 @@ void FGetAttackPlan::TreeStart(FStateTreeExecutionContext& Context) const
 		return;
 	}
 	
-	Tick(Context, 0);
+	Tick(Context, 0);*/
 }
 
 void FGetAttackPlan::Tick(FStateTreeExecutionContext& Context, const float DeltaTime) const
@@ -50,6 +50,8 @@ void FGetAttackPlan::Tick(FStateTreeExecutionContext& Context, const float Delta
 	const FPlanOfAttack* Plan = &Enemy->GetWeapon()->CurrentPlan;
 	
 	InstanceData.Plan = *Plan;
+	
+	//UE_LOG(LogTemp, Warning, TEXT("Plan success"));
 	
 	InstanceData.bNeedsNewPlan = Plan->CreationTime + Plan->ReevaluationTime <= InstanceData.Pawn->GetWorld()->GetTimeSeconds();
 }
