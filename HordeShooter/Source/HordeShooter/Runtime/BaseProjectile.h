@@ -26,15 +26,28 @@ public:
 	UPROPERTY(EditAnywhere)
 	float PenetrationValue = 1;
 	
+protected:
+	float ImpactDamage = 0;
+	
 private:
 	float EntitiesPenetrated = 0;
 	
-public:	
+	FVector GravityDirection = FVector(0, 0, -1);
+	
+public:
 	ABaseProjectile();
 	
 	virtual void BeginPlay() override;
 	
 	virtual void Tick(float DeltaTime) override;
 	
+	virtual void Initialize(float Damage);
+	
+	virtual void Launch(const FVector Velocity, const FVector UpVector);
+	
+protected:
+	virtual void OnOverlapInternal(AActor* OtherActor);
+	
+private:
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 };

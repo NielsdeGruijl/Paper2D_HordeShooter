@@ -3,22 +3,36 @@
 
 #include "RangedSlimeAttack.h"
 
+#include "EnvironmentQuery/EnvQueryTypes.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "HordeShooter/Abilities/DataAssets/Enemies/RangedSlimeAttackData.h"
 #include "HordeShooter/Runtime/BaseProjectile.h"
 #include "Kismet/GameplayStatics.h"
 
-void URangedSlimeAttack::StartInternal(FVector OriginPosition, FVector TargetPosition)
+void URangedSlimeAttack::StartInternal(FVector OriginPosition, FVector TargetPosition, FVector UpVector, bool bIsDebugging)
 {
-	Super::StartInternal(OriginPosition, TargetPosition);
+	Super::StartInternal(OriginPosition, TargetPosition, UpVector, bIsDebugging);
 		
+	FVector Origin = OriginPosition;
+	FVector Target = TargetPosition;
+	
+	FQuat Rotation = FQuat::Identity;
+	
+	if (UpVector != FVector::UpVector)
+	{
+		Rotation = FQuat::FindBetweenNormals(UpVector, FVector::UpVector);
+	
+		Origin = Rotation.RotateVector(OriginPosition);
+		Target = Rotation.RotateVector(TargetPosition);
+	}
+	
 	FVector LaunchVelocity;
 	
 	bool bFound = UGameplayStatics::SuggestProjectileVelocity_CustomArc(
 		this,
 		LaunchVelocity,
-		OriginPosition,
-		TargetPosition,
+		Origin,
+		Target,
 		GetWorld()->GetGravityZ(),
 		AbilityData->ProjectileArc);
 	
@@ -40,7 +54,12 @@ void URangedSlimeAttack::StartInternal(FVector OriginPosition, FVector TargetPos
 	if (!ProjectileObj)
 		return;
 	
-	ProjectileObj->ProjectileMovementComponent->Velocity = LaunchVelocity;
+	if (UpVector != FVector::UpVector)
+		LaunchVelocity = Rotation.Inverse().RotateVector(LaunchVelocity);
+	
+	ProjectileObj->Initialize(AbilityData->Damage);
+	
+	ProjectileObj->Launch(LaunchVelocity, UpVector);
 }
 
 void URangedSlimeAttack::Stop()
