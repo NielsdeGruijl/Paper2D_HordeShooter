@@ -31,7 +31,7 @@ private:
 	float ChargeProgress = 0;
 
 public:
-	void StartInternal(FVector EntityPosition, FVector AimPosition) override;
+	void StartInternal(FVector EntityPosition, FVector AimPosition, FVector UpVector, bool bIsDebugging) override;
 	void Stop() override;
 	
 protected:

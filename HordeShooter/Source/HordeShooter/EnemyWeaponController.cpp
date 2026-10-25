@@ -3,11 +3,8 @@
 
 #include "EnemyWeaponController.h"
 
-#include <string>
-
 #include "Abilities/Enemies/BaseEnemyAbility.h"
 #include "Entities/Enemies/BasePaperEnemy.h"
-#include "Kismet/GameplayStatics.h"
 
 void UEnemyWeaponController::Initialize(UWeaponData* WeaponToSet)
 {
@@ -25,32 +22,20 @@ void UEnemyWeaponController::Initialize(UWeaponData* WeaponToSet)
 	CurrentPlan = FPlanOfAttack();
 }
 
-void UEnemyWeaponController::StartAbility(int32 AbilityIndex, FVector OriginLocation, FVector TargetLocation)
+void UEnemyWeaponController::StartAbility(int32 AbilityIndex, FVector OriginLocation, FVector TargetLocation, FVector UpVector)
 {
-	Super::StartAbility(AbilityIndex, OriginLocation, TargetLocation);
+	Super::StartAbility(AbilityIndex, OriginLocation, TargetLocation, UpVector);
 	
 	CurrentPlan.bIsValid = false;
 	
 	CurrentPlan.bIsExecuting = false;
-	
-	/*FString string = FString::SanitizeFloat((TargetLocation - OriginLocation).Length());
-	DrawDebugString(GetWorld(), OwningPawn->GetActorLocation() + FVector::ZAxisVector * 200, string);*/
 }
 
 void UEnemyWeaponController::Update(float DeltaTime)
 {
 	Super::Update(DeltaTime);
-	
-	DrawDebugSphere(GetWorld(), OwningPawn->GetActorLocation(), CurrentPlan.MinimumRange, 24, FColor::Green, false, 0);
-	DrawDebugSphere(GetWorld(), OwningPawn->GetActorLocation(), CurrentPlan.MaximumRange, 24, FColor::Red, false, 0);
-	
-	FString string = FString::SanitizeFloat(CurrentPlan.bIsValid);
-	string = FString("Is plan valid: ") + string;
-	DrawDebugString(GetWorld(), OwningPawn->GetActorLocation() + FVector::ZAxisVector * 200, string, nullptr, FColor::White, 0);
-	
-	FString string2 = FString::SanitizeFloat(CurrentPlan.bIsExecuting);
-	string2 = FString("Is plan Executing: ") + string2;
-	DrawDebugString(GetWorld(), OwningPawn->GetActorLocation() + FVector::ZAxisVector * 150, string2, nullptr, FColor::White, 0);
+
+	DebugWeaponPlan();
 }
 
 bool UEnemyWeaponController::FormulatePlan(const APawn& Target)
@@ -95,4 +80,21 @@ bool UEnemyWeaponController::FormulatePlan(const APawn& Target)
 	CurrentPlan.bIsValid = true;
 	
 	return true;
+}
+
+void UEnemyWeaponController::DebugWeaponPlan()
+{
+	if (!*bIsDebugging)
+		return;
+	
+	DrawDebugSphere(GetWorld(), OwningPawn->GetActorLocation(), CurrentPlan.MinimumRange, 24, FColor::Green, false, 0);
+	DrawDebugSphere(GetWorld(), OwningPawn->GetActorLocation(), CurrentPlan.MaximumRange, 24, FColor::Red, false, 0);
+	
+	FString string = FString::SanitizeFloat(CurrentPlan.bIsValid);
+	string = FString("Is plan valid: ") + string;
+	DrawDebugString(GetWorld(), OwningPawn->GetActorLocation() + FVector::ZAxisVector * 200, string, nullptr, FColor::White, 0);
+	
+	FString string2 = FString::SanitizeFloat(CurrentPlan.bIsExecuting);
+	string2 = FString("Is plan Executing: ") + string2;
+	DrawDebugString(GetWorld(), OwningPawn->GetActorLocation() + FVector::ZAxisVector * 150, string2, nullptr, FColor::White, 0);
 }

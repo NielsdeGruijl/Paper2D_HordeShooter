@@ -20,7 +20,7 @@ private:
 	UMeleeAttackData* AbilityData;
 	
 public:
-	virtual void StartInternal(FVector OriginPosition, FVector TargetPosition) override;
+	virtual void StartInternal(FVector OriginPosition, FVector TargetPosition, FVector UpVector, bool bIsDebugging) override;
 	
 	virtual void Stop() override;
 	

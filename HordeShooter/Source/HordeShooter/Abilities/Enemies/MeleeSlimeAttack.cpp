@@ -7,9 +7,9 @@
 #include "HordeShooter/Abilities/DataAssets/Enemies/MeleeAttackData.h"
 #include "HordeShooter/Entities/Systems/HealthManager.h"
 
-void UMeleeSlimeAttack::StartInternal(FVector OriginPosition, FVector TargetPosition)
+void UMeleeSlimeAttack::StartInternal(FVector OriginPosition, FVector TargetPosition, FVector UpVector, bool bIsDebugging)
 {
-	Super::StartInternal(OriginPosition, TargetPosition);
+	Super::StartInternal(OriginPosition, TargetPosition, UpVector, bIsDebugging);
 	
 	TArray<FOverlapResult> Overlaps;
 	
@@ -20,7 +20,8 @@ void UMeleeSlimeAttack::StartInternal(FVector OriginPosition, FVector TargetPosi
 	
 	FCollisionQueryParams QueryParams;
 	
-	DrawDebugBox(GetWorld(), OriginPosition, AbilityData->MeleeHitboxBounds, FQuat::Identity, FColor::Green, false, 1.0f);
+	if (bIsDebugging)
+		DrawDebugBox(GetWorld(), OriginPosition, AbilityData->MeleeHitboxBounds, FQuat::Identity, FColor::Green, false, 1.0f);
 	
 	if (GetWorld()->OverlapMultiByObjectType(
 		Overlaps,
@@ -34,7 +35,7 @@ void UMeleeSlimeAttack::StartInternal(FVector OriginPosition, FVector TargetPosi
 		{
 			AActor* Actor = Result.GetActor();
 			
-			if (!Actor)
+			if (!Actor || Actor == Instigator)
 				continue;
 			
 			UHealthManager* HealthManager = Result.GetActor()->FindComponentByClass<UHealthManager>();

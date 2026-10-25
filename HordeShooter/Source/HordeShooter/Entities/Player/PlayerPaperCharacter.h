@@ -51,6 +51,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
 	UWeaponData* PrimaryWeaponData;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Debugging")
+	bool bDebugWeaponController;
+	
 private:
 	UPROPERTY()
 	UPlayerWeaponController* PrimaryWeapon;

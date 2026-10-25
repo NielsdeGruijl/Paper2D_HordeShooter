@@ -12,9 +12,9 @@
 #include "HordeShooter/Entities/Systems/HealthManager.h"
 #include "HordeShooter/Runtime/SpriteVFXActor.h"
 
-void UDaggerDash::StartInternal(FVector EntityPosition, FVector AimPosition)
+void UDaggerDash::StartInternal(FVector EntityPosition, FVector AimPosition, FVector UpVector, bool bIsDebugging)
 {
-	Super::StartInternal(EntityPosition, AimPosition);
+	Super::StartInternal(EntityPosition, AimPosition, UpVector, bIsDebugging);
 	
 	if (!Player)
 	{

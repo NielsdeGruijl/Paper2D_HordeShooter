@@ -31,9 +31,9 @@ private:
 	UBaseAbilityData* Data;
 
 public:
-	bool Start(FVector EntityPosition, FVector AimPosition);
+	bool Start(FVector EntityPosition, FVector AimPosition, FVector UpVector = FVector::UpVector, bool bIsDebugging = false);
 	
-	virtual void StartInternal(FVector EntityPosition, FVector AimPosition);
+	virtual void StartInternal(FVector EntityPosition, FVector AimPosition, FVector UpVector, bool bIsDebugging);
 	virtual void Stop();
 	
 	virtual void Update(float DeltaTime);

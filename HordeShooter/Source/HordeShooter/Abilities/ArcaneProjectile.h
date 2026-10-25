@@ -20,7 +20,7 @@ private:
 	UArcaneProjectileData* AbilityData;
 	
 public:
-	void StartInternal(FVector EntityPosition, FVector AimPosition) override;
+	void StartInternal(FVector EntityPosition, FVector AimPosition, FVector UpVector, bool bIsDebugging) override;
 	void Stop() override;
 	
 protected:

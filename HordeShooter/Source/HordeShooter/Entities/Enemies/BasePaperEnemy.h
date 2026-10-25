@@ -55,6 +55,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* AttackOrigin;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Debugging")
+	bool bDebugWeaponController = false;
+	
 protected:
 	UPROPERTY()
 	UEnemyWeaponController* WeaponController;

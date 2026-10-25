@@ -61,15 +61,15 @@ protected:
 	UPROPERTY()
 	TObjectPtr<ABasePaperEnemy> Owner;
 	
-private:
-	float ChaseDistanceBuffer = 0.25f;
-	
 public:
 	virtual void Initialize(UWeaponData* WeaponToSet) override;
 	
-	virtual void StartAbility(int32 AbilityIndex, FVector OriginLocation, FVector TargetLocation) override;
+	virtual void StartAbility(int32 AbilityIndex, FVector OriginLocation, FVector TargetLocation, FVector UpVector = FVector::UpVector) override;
 	
 	virtual void Update(float DeltaTime) override;
 	
 	bool FormulatePlan(const APawn& Target);
+	
+protected:
+	virtual void DebugWeaponPlan();
 };

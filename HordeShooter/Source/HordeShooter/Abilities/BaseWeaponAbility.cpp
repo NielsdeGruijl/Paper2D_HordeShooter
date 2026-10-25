@@ -4,8 +4,9 @@
 #include "BaseWeaponAbility.h"
 
 #include "DataAssets/BaseAbilityData.h"
+#include "Particles/VectorField/ParticleModuleVectorFieldBase.h"
 
-bool UBaseWeaponAbility::Start(FVector EntityPosition, FVector AimPosition)
+bool UBaseWeaponAbility::Start(FVector EntityPosition, FVector AimPosition, FVector UpVector, bool bIsDebugging)
 {
 	if (bOnCooldown)
 	{
@@ -13,7 +14,7 @@ bool UBaseWeaponAbility::Start(FVector EntityPosition, FVector AimPosition)
 		return false;
 	}
 	
-	StartInternal(EntityPosition, AimPosition);
+	StartInternal(EntityPosition, AimPosition, UpVector, bIsDebugging);
 	
 	bOnCooldown = true;
 	GetWorld()->GetTimerManager().SetTimer(CooldownTimer, CooldownTimerDelegate, Data->Cooldown, false);
@@ -21,7 +22,7 @@ bool UBaseWeaponAbility::Start(FVector EntityPosition, FVector AimPosition)
 	return true;
 }
 
-void UBaseWeaponAbility::StartInternal(FVector EntityPosition, FVector AimPosition)
+void UBaseWeaponAbility::StartInternal(FVector EntityPosition, FVector AimPosition, FVector UpVector, bool bIsDebugging)
 {
 }
 

@@ -32,7 +32,7 @@ bool UPlayerWeaponController::CanStartAbility(int32 AbilityIndex) const
 	return !Abilities[AbilityIndex]->GetOnCooldown();
 }
 
-void UPlayerWeaponController::StartAbility(int32 AbilityIndex, FVector OriginLocation, FVector TargetLocation)
+void UPlayerWeaponController::StartAbility(int32 AbilityIndex, FVector OriginLocation, FVector TargetLocation, FVector UpVector)
 {
 	if (AbilityIndex >= Abilities.Num() || !Abilities[AbilityIndex])
 	{
@@ -40,7 +40,12 @@ void UPlayerWeaponController::StartAbility(int32 AbilityIndex, FVector OriginLoc
 		return;
 	}
 	
-	Abilities[AbilityIndex]->Start(OriginLocation, TargetLocation);
+	bool bDebugAbility = false;
+	
+	if (bIsDebugging != nullptr)
+		bDebugAbility = *bIsDebugging;
+	
+	Abilities[AbilityIndex]->Start(OriginLocation, TargetLocation, UpVector, bDebugAbility);
 }
 
 void UPlayerWeaponController::StopAbility(int32 AbilityIndex)

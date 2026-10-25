@@ -62,6 +62,8 @@ void ABasePaperEnemy::BeginPlay()
 		WeaponController->OwningPawn = this;
 		WeaponController->Initialize(WeaponData);
 	}
+	
+	WeaponController->bIsDebugging = &bDebugWeaponController;
 }
 		
 void ABasePaperEnemy::Tick(float DeltaSeconds)

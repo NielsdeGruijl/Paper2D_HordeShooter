@@ -21,6 +21,8 @@ public:
 	UPROPERTY()
 	APawn* OwningPawn;
 	
+	bool* bIsDebugging;
+	
 protected:
 	UPROPERTY()
 	UWeaponData* WeaponData;
@@ -33,7 +35,7 @@ public:
 	
 	bool CanStartAbility(int32 AbilityIndex) const;
 	
-	virtual void StartAbility(int32 AbilityIndex, FVector OriginLocation, FVector TargetLocation);
+	virtual void StartAbility(int32 AbilityIndex, FVector OriginLocation, FVector TargetLocation, FVector UpVector = FVector::UpVector);
 	virtual void StopAbility(int32 AbilityIndex);
 	
 	virtual void Update(float DeltaTime);

@@ -11,9 +11,9 @@
 #include "HordeShooter/Utils/CoroutineManager.h"
 #include "HordeShooter/Runtime/MagicCircleDecal.h"
 
-void UChargedExplosion::StartInternal(FVector EntityPosition, FVector AimPosition)
+void UChargedExplosion::StartInternal(FVector EntityPosition, FVector AimPosition, FVector UpVector, bool bIsDebugging)
 {
-	Super::StartInternal(EntityPosition, AimPosition);
+	Super::StartInternal(EntityPosition, AimPosition, UpVector, bIsDebugging);
 	
 	Update.BindUFunction(this, FName("UpdateCharge"));
 	Complete.BindUFunction(this, FName("CompleteCharge"));

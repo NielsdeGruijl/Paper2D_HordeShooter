@@ -34,7 +34,7 @@ private:
 	float CurrentAttackCombo = 0;
 	
 public:
-	virtual void StartInternal(FVector EntityPosition, FVector AimPosition) override;
+	virtual void StartInternal(FVector EntityPosition, FVector AimPosition, FVector UpVector, bool bIsDebugging) override;
 	virtual void Stop() override;
 	
 	virtual void Update(float DeltaTime) override;

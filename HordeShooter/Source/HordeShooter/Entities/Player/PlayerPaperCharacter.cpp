@@ -42,6 +42,8 @@ void APlayerPaperCharacter::BeginPlay()
 	else
 		UE_LOG(LogTemp, Error, TEXT("NO PRIMARY WEAPON DATA FOUND"));
 	
+	PrimaryWeapon->bIsDebugging = &bDebugWeaponController;
+	
 	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
 
